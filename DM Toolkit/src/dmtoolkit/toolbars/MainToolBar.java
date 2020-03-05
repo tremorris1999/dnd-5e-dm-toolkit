@@ -7,15 +7,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 
 public class MainToolBar extends ToolBar
 {
 	BorderPane root;
-	Pane[] panes;
-
+	Node[] panes;
 	ObservableList<Node> items;
-	public MainToolBar(final BorderPane root, final Pane[] panes)
+
+	public MainToolBar(final BorderPane root, final Node[] panes)
 	{
 		super();
 		this.root = root;
@@ -25,12 +24,12 @@ public class MainToolBar extends ToolBar
 		Button statBtn = new Button("Stat Blocks"), xpBtn = new Button("XP Manager");
 		Button prefBtn = new Button("Preferences");
 
-		items = this.getItems();
-		items.add(mainBtn);
-		items.add(combatBtn);
-		items.add(statBtn);
-		items.add(xpBtn);
-		items.add(prefBtn);
+		this.items = this.getItems();
+		this.items.add(mainBtn);
+		this.items.add(combatBtn);
+		this.items.add(statBtn);
+		this.items.add(xpBtn);
+		this.items.add(prefBtn);
 
 		mainBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -55,6 +54,7 @@ public class MainToolBar extends ToolBar
 			@Override public void handle(final ActionEvent arg0)
 			{
 				System.out.println("stats pressed");
+				root.setCenter(panes[2]);
 			}
 		});
 

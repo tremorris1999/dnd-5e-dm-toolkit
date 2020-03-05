@@ -14,5 +14,6 @@ public class MainView extends BorderPane
 	{
 		super();
 		this.setBackground(new Background(new BackgroundFill(Paint.valueOf(Color.CADETBLUE.desaturate().desaturate().toString()), CornerRadii.EMPTY, new Insets(0))));
+
 	}
 }
