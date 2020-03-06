@@ -13,6 +13,6 @@ public class CombatView extends BorderPane
 	public CombatView()
 	{
 		super();
-		this.setBackground(new Background(new BackgroundFill(Paint.valueOf(Color.GRAY.desaturate().toString()), CornerRadii.EMPTY, Insets.EMPTY)));
+		this.setStyle("-fx-background-color: gray;");
 	}
 }

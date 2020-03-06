@@ -13,7 +13,7 @@ public class MainView extends BorderPane
 	public MainView()
 	{
 		super();
-		this.setBackground(new Background(new BackgroundFill(Paint.valueOf(Color.CADETBLUE.desaturate().desaturate().toString()), CornerRadii.EMPTY, new Insets(0))));
+		this.setStyle("-fx-background-color: cadetblue;");
 
 	}
 }

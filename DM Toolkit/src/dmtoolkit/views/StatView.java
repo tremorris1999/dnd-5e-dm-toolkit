@@ -27,21 +27,18 @@ public class StatView extends BorderPane
 	public StatView()
 	{
 		super();
-		this.setBackground(new Background(new BackgroundFill(Paint.valueOf(Color.BLANCHEDALMOND.desaturate().desaturate().toString()), CornerRadii.EMPTY, Insets.EMPTY)));
-
+		this.setStyle("-fx-background-color: blanchedalmond");
 
 		// left
 		Label leftLabel = new Label("Stat Block Index");
-		leftLabel.setBackground(new Background(new BackgroundFill(Paint.valueOf(Color.WHITE.toString()), CornerRadii.EMPTY, Insets.EMPTY)));
-		leftLabel.setFont(new Font(24));
+		leftLabel.setStyle("-fx-background-color: white; -fx-font-size: 24; -fx-alignment: center;");
 		leftLabel.setMinSize(300, 50);
-		leftLabel.setAlignment(Pos.CENTER);
 
 		ScrollPane statList = new ScrollPane();
 		statList.setMinSize(300, 850);
 
 		VBox leftHolder = new VBox(leftLabel, statList);
-		leftHolder.setBorder(new Border(new BorderStroke(Paint.valueOf("Black"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		leftHolder.setStyle("-fx-border-color: black;");
 
 		this.setLeft(leftHolder);
 
@@ -63,8 +60,7 @@ public class StatView extends BorderPane
 		VBox rightHolder = new VBox(ivHolder, placeholder);
 		rightHolder.setMaxSize(300, 900);
 		rightHolder.setMinSize(300, 900);
-		rightHolder.setBorder(new Border(new BorderStroke(Paint.valueOf("Black"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-		rightHolder.setBackground(new Background(new BackgroundFill(Paint.valueOf(Color.WHITE.toString()), CornerRadii.EMPTY, Insets.EMPTY)));
+		rightHolder.setStyle("-fx-background-color: white; -fx-border-color: black;");
 
 		this.setRight(rightHolder);
 
