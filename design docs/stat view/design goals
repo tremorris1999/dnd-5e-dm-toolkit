@@ -1,0 +1,14 @@
+Stat View:
+
+	Functionality goals:
+		scrollable index of stat blocks to select from
+		search bar for stat blocks
+		seperate pane that shows in-depth "from the book" info about the selected stat block
+		image for the stat block
+		shorthand info pane (e.g shows ability scores and CR)
+        control for adding a custom stat block
+        control for adding an instance of a stat block to the combat view
+        control for deleting CUSTOM stat blocks ONLY
+
+	Aesthetic goals:
+		make perty.

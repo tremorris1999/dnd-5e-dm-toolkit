@@ -1,0 +1,8 @@
+Combat View:
+        
+        Funtionality goals:
+            hold an index of added instances of stat blocks
+            shows some mid-detail info for the selected stat block
+            displaces mid-combat details (eg AC, Ability Scores, Skill Bonuses HP, Temp HP, etc)
+            controls for damaging or healing the given entity
+            post-death xp export to xp view
