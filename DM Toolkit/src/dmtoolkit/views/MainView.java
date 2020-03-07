@@ -1,14 +1,49 @@
 package dmtoolkit.views;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.BorderPane;
 
 
 public class MainView extends BorderPane
 {
-	public MainView()
+	private RootView parent;
+	private double width;
+	private double height;
+	public MainView(final RootView parent)
 	{
 		super();
-		this.setStyle("-fx-background-color: cadetblue;");
 
+		// parent setup
+		this.parent = parent;
+		this.parent.widthProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
+			{
+				MainView.this.updateSizes();
+			}
+		});
+		this.parent.heightProperty().addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
+			{
+				MainView.this.updateSizes();
+			}
+		});
+
+		// style setup
+		this.setStyle("-fx-background-color: cadetblue;");
+	}
+
+	public void updateSizes()
+	{
+		this.width = this.parent.getCalcWidth();
+		this.height = this.parent.getCalcHeight() * 0.75;
+		this.setMinWidth(this.width);
+		this.setMinHeight(this.height);
+		this.setMaxWidth(this.width);
+		this.setMaxHeight(this.height);
 	}
 }
