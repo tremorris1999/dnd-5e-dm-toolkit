@@ -2,6 +2,7 @@ package dmtoolkit;
 
 import dmtoolkit.toolbars.MainToolBar;
 import dmtoolkit.views.CombatView;
+import dmtoolkit.views.ConsoleView;
 import dmtoolkit.views.MainView;
 import dmtoolkit.views.StatView;
 import javafx.application.Application;
@@ -16,13 +17,20 @@ public class Main extends Application {
 	public void start(final Stage primaryStage) {
 		try {
 			BorderPane root = new BorderPane();
-
-			Node[] panes = {new MainView(), new CombatView(), new StatView()};
-
+			Node[] panes = {new MainView(), new CombatView(), new StatView(root)};
 			root.setTop(new MainToolBar(root, panes));
-			Scene scene = new Scene(root, 1600, 900);
-			//primaryStage.setMaximized(true);
+			root.setCenter(panes[0]);
+			root.setBottom(new ConsoleView());
+			Scene scene = new Scene(root, 1440, 810);
+
 			primaryStage.setResizable(false);
+			primaryStage.setMinWidth(1440);
+			primaryStage.setMinHeight(810);
+			primaryStage.setMaxHeight(1440);
+			primaryStage.setMaxWidth(810);
+
+
+
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Dungeon Master's Toolkit v 0.0.1 pre-pre-pre-pre-pre-alpha");
 			primaryStage.show();
