@@ -13,7 +13,6 @@ import javafx.scene.control.ToolBar;
 public class MainToolBar extends ToolBar
 {
 	private RootView parent;
-	private Node[] panes;
 	private ObservableList<Node> items;
 	private double width;
 	private double height;
@@ -23,7 +22,6 @@ public class MainToolBar extends ToolBar
 	{
 		super();
 		this.parent = parent;
-		this.panes = panes;
 		this.items = this.getItems();
 		this.size = 0;
 
@@ -44,14 +42,16 @@ public class MainToolBar extends ToolBar
 			}
 		});
 
+
 		MainToolBarButton mainBtn = new MainToolBarButton("Main", this), combatBtn = new MainToolBarButton("Combat Tracker", this);
 		MainToolBarButton statBtn = new MainToolBarButton("Stat Blocks", this), xpBtn = new MainToolBarButton("XP Manager", this);
-		MainToolBarButton prefBtn = new MainToolBarButton("Preferences", this);
+		MainToolBarButton npcBtn = new MainToolBarButton("NPC Manager", this), prefBtn = new MainToolBarButton("Preferences", this);
 
 		this.items.add(mainBtn);
 		this.items.add(combatBtn);
 		this.items.add(statBtn);
 		this.items.add(xpBtn);
+		this.items.add(npcBtn);
 		this.items.add(prefBtn);
 		this.size = this.getItems().size();
 
@@ -87,6 +87,14 @@ public class MainToolBar extends ToolBar
 			@Override public void handle(final ActionEvent arg0)
 			{
 				System.out.println("xp pressed");
+			}
+		});
+		
+		npcBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override public void handle(final ActionEvent arg0)
+			{
+				parent.setCenter(panes[3]);				
 			}
 		});
 
