@@ -70,7 +70,8 @@ public class NPCView extends BorderPane
 		{
 			@Override public void handle(final ActionEvent arg0)
 			{
-				npcListContainer.getChildren().remove(ButtonList.remove().element());
+				if(ButtonList.size() > 0)
+					npcListContainer.getChildren().remove(ButtonList.remove().element());
 			}
 		});
 		
