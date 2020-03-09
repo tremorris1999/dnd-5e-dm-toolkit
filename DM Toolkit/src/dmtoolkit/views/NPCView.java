@@ -51,21 +51,26 @@ public class NPCView extends BorderPane
 		// main container for center
 		VBox npcContent = new VBox();
 		npcContent.setStyle("-fx-background-color: white;");
-		
+
+		/* Linked list of element type button and object type NPC
+		 * This allows a button to be attached to a class of information */
 		LinkedList<Button, NPC> ButtonList = new LinkedList<Button, NPC>();
 		
+		/* Creates a new NPC button and Class and adds it to the ButtonList for managment */
 		createNPCBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override public void handle(final ActionEvent arg0)
 			{
 				Button newNPCBtn = new Button("NPC Name");
 				NPC npc = new NPC();
+				/* when the button is clicked update the content on the page with current button object */
 				newNPCBtn.setOnAction(e -> showNPC(npc, npcContent));
 				ButtonList.add(new Node<Button, NPC>(newNPCBtn, npc));
 				npcListContainer.getChildren().add(newNPCBtn);
 			}
 		});
 		
+		/* Remove a button element from the list and remove it from the container */
 		deleteLastBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override public void handle(final ActionEvent arg0)
@@ -105,91 +110,102 @@ public class NPCView extends BorderPane
 
 	}
 	
-	public void reRollNPC(NPC e, String trait, VBox npcContent) {
-		e.reRoll(trait);
-		showNPC(e, npcContent);
+	/* re-roll specific trait and re draw the content view */
+	public void reRollNPC(NPC object, String trait, VBox npcContent) {
+		object.reRoll(trait);
+		showNPC(object, npcContent);
 	}
 	
-	public void showNPC(NPC e, VBox npcContent) {
+	/* show the specified object in the content view */
+	public void showNPC(NPC object, VBox npcContent) {
 		npcContent.getChildren().clear();		
 		HBox name= new HBox();
 		Label nameLabel = new Label("Name: ");
 		nameLabel.setStyle("-fx-font-size: 24;");
 		name.getChildren().addAll(nameLabel);
 		
+		/* Appearance block */
 		HBox appearance = new HBox();
 		Label appearanceLabel = new Label("Appearance: ");
 		appearanceLabel.setStyle("-fx-font-size: 24;");
 		Button reRollApperanceBtn = new Button("reroll");			
-		reRollApperanceBtn.setOnAction(event -> reRollNPC(e, "appearance", npcContent));		
-		Label appearanceDescription = new Label(e.appearance());
+		reRollApperanceBtn.setOnAction(event -> reRollNPC(object, "appearance", npcContent));		
+		Label appearanceDescription = new Label(object.appearance());
 		appearance.getChildren().addAll(appearanceLabel, appearanceDescription, reRollApperanceBtn);
 		
+		/* High Ability block */
 		HBox highAbility= new HBox();
 		Label highAbilityLabel = new Label("High Ability: ");
 		highAbilityLabel.setStyle("-fx-font-size: 24;");
-		Label highAbilityDescription = new Label(e.highAbility());
+		Label highAbilityDescription = new Label(object.highAbility());
 		Button reRollHighAbilityBtn = new Button("reroll");					
-		reRollHighAbilityBtn.setOnAction(event -> reRollNPC(e, "highAbility", npcContent));
+		reRollHighAbilityBtn.setOnAction(event -> reRollNPC(object, "highAbility", npcContent));
 		highAbility.getChildren().addAll(highAbilityLabel, highAbilityDescription, reRollHighAbilityBtn);
 		
+		/* Low Ability block */
 		HBox lowAbility= new HBox();
 		Label lowAbilityLabel = new Label("Low Ability: ");
 		lowAbilityLabel.setStyle("-fx-font-size: 24;");
-		Label lowAbilityDescription = new Label(e.lowAbility());
+		Label lowAbilityDescription = new Label(object.lowAbility());
 		Button reRollLowAbilityBtn = new Button("reroll");				
-		reRollLowAbilityBtn.setOnAction(event -> reRollNPC(e, "lowAbility", npcContent));
+		reRollLowAbilityBtn.setOnAction(event -> reRollNPC(object, "lowAbility", npcContent));
 		lowAbility.getChildren().addAll(lowAbilityLabel, lowAbilityDescription, reRollLowAbilityBtn);
 		
+		/* Talents block */
 		HBox talents = new HBox();
 		Label talentsLabel = new Label("Talents: ");
 		talentsLabel.setStyle("-fx-font-size: 24;");
-		Label talentsDescription = new Label(e.talents());
+		Label talentsDescription = new Label(object.talents());
 		Button reRollTalentsBtn = new Button("reroll");							
-		reRollTalentsBtn.setOnAction(event -> reRollNPC(e, "talents", npcContent));
+		reRollTalentsBtn.setOnAction(event -> reRollNPC(object, "talents", npcContent));
 		talents.getChildren().addAll(talentsLabel, talentsDescription, reRollTalentsBtn);
 		
+		/* Manerisms block */
 		HBox manerisms = new HBox();
 		Label manerismsLabel = new Label("Manerisms: ");
 		manerismsLabel.setStyle("-fx-font-size: 24;");
-		Label manerismsDescription = new Label(e.manerisms());
+		Label manerismsDescription = new Label(object.manerisms());
 		Button reRollManerismsBtn = new Button("reroll");						
-		reRollManerismsBtn.setOnAction(event -> reRollNPC(e, "manerisms", npcContent));
+		reRollManerismsBtn.setOnAction(event -> reRollNPC(object, "manerisms", npcContent));
 		manerisms.getChildren().addAll(manerismsLabel, manerismsDescription, reRollManerismsBtn);
 	
+		/* Interaction Trait block */
 		HBox interactionTrait = new HBox();
 		Label interactionTraitLabel = new Label("Interaction Traits: ");
 		interactionTraitLabel.setStyle("-fx-font-size: 24;");
-		Label interactionTraitDescription = new Label(e.interactionTraits());
+		Label interactionTraitDescription = new Label(object.interactionTraits());
 		Button reRollinteractionTraitBtn = new Button("reroll");						
-		reRollinteractionTraitBtn.setOnAction(event -> reRollNPC(e, "interactionTraits", npcContent));
+		reRollinteractionTraitBtn.setOnAction(event -> reRollNPC(object, "interactionTraits", npcContent));
 		interactionTrait.getChildren().addAll(interactionTraitLabel, interactionTraitDescription, reRollinteractionTraitBtn);
 		
+		/* Ideas block */
 		HBox ideas = new HBox();
 		Label ideasLabel = new Label("Ideas: ");
 		ideasLabel.setStyle("-fx-font-size: 24;");
-		Label ideasDescription = new Label(e.ideas());
+		Label ideasDescription = new Label(object.ideas());
 		Button reRollideasBtn = new Button("reroll");				
-		reRollideasBtn.setOnAction(event -> reRollNPC(e, "ideas", npcContent));
+		reRollideasBtn.setOnAction(event -> reRollNPC(object, "ideas", npcContent));
 		ideas.getChildren().addAll(ideasLabel, ideasDescription, reRollideasBtn);
 		
+		/* Bonds block */
 		HBox bonds = new HBox();
 		Label bondsLabel = new Label("Bonds: ");
 		bondsLabel.setStyle("-fx-font-size: 24;");
-		Label bondsDescription = new Label(e.bonds());
+		Label bondsDescription = new Label(object.bonds());
 		Button reRollBondsBtn = new Button("reroll");
-		reRollBondsBtn.setOnAction(event -> reRollNPC(e, "bonds", npcContent));
+		reRollBondsBtn.setOnAction(event -> reRollNPC(object, "bonds", npcContent));
 		bonds.getChildren().addAll(bondsLabel, bondsDescription, reRollBondsBtn);
 		
+		/* Flaws and Secrets block */
 		HBox flawsSecerets= new HBox();
 		Label flawsSeceretsLabel = new Label("Flaws n Secerets: ");
 		flawsSeceretsLabel.setStyle("-fx-font-size: 24;");
-		Label flawsSeceretsDescription = new Label(e.flawsNSecrets());
+		Label flawsSeceretsDescription = new Label(object.flawsNSecrets());
 		Button reRollFlawsSeceretsBtn = new Button("reroll");		
-		reRollFlawsSeceretsBtn.setOnAction(event -> reRollNPC(e, "flawsNSecrets", npcContent));
+		reRollFlawsSeceretsBtn.setOnAction(event -> reRollNPC(object, "flawsNSecrets", npcContent));
 		flawsSecerets.getChildren().addAll(flawsSeceretsLabel, flawsSeceretsDescription, reRollFlawsSeceretsBtn);
 		
-
+		/* update the content view and set to center */
 		npcContent.getChildren().addAll(name, appearance, highAbility, lowAbility, talents, manerisms, interactionTrait, ideas, bonds, flawsSecerets);
 		this.setCenter(npcContent);
 	}
