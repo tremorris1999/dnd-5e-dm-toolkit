@@ -1,15 +1,16 @@
-package dmtoolkit.views;
+package dmtoolkit.components;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.ListView;
 
-public class ConsoleView extends BorderPane
+public class StatViewScrollPaneListView extends ListView<String> //TODO change to StatBlock once that exists
 {
-	private RootView parent;
+	private StatViewScrollPane parent;
 	private double width;
 	private double height;
-	public ConsoleView(final RootView parent)
+
+	public StatViewScrollPaneListView(final StatViewScrollPane parent)
 	{
 		super();
 
@@ -20,7 +21,7 @@ public class ConsoleView extends BorderPane
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				ConsoleView.this.updateSizes();
+				StatViewScrollPaneListView.this.updateSizes();
 			}
 		});
 		this.parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -28,19 +29,21 @@ public class ConsoleView extends BorderPane
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				ConsoleView.this.updateSizes();
+				StatViewScrollPaneListView.this.updateSizes();
 			}
 		});
 
-		// style setup
-		this.setStyle("-fx-background-color: black; -fx-border-color: white;");
+		// data setup
+		//TODO StatBlock type
+		for (int x = 0; x != 100; x++)
+			this.getItems().add("Placeholder #" + x);
 
 	}
 
 	public void updateSizes()
 	{
-		this.width = this.parent.getCalcWidth();
-		this.height = this.parent.getCalcHeight() * 0.195;
+		this.width = this.parent.getCalcWidth() * 0.99;
+		this.height = this.parent.getCalcHeight() * 0.99;
 		this.setMinWidth(this.width);
 		this.setMinHeight(this.height);
 		this.setMaxWidth(this.width);

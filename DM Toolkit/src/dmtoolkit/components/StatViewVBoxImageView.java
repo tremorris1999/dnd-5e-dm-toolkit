@@ -1,26 +1,30 @@
-package dmtoolkit.views;
+package dmtoolkit.components;
+
+import java.io.File;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-public class ConsoleView extends BorderPane
+public class StatViewVBoxImageView extends ImageView
 {
-	private RootView parent;
+	private StatViewVBox parent;
 	private double width;
 	private double height;
-	public ConsoleView(final RootView parent)
-	{
-		super();
 
-		// parent setup
+	public StatViewVBoxImageView(final StatViewVBox parent, final String path)
+	{
+		super(new Image(new File(path).toURI().toString()));
+
+		//parent setup
 		this.parent = parent;
 		this.parent.widthProperty().addListener(new ChangeListener<Number>()
 		{
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				ConsoleView.this.updateSizes();
+				StatViewVBoxImageView.this.updateSizes();
 			}
 		});
 		this.parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -28,22 +32,16 @@ public class ConsoleView extends BorderPane
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				ConsoleView.this.updateSizes();
+				StatViewVBoxImageView.this.updateSizes();
 			}
 		});
-
-		// style setup
-		this.setStyle("-fx-background-color: black; -fx-border-color: white;");
-
 	}
 
 	public void updateSizes()
 	{
-		this.width = this.parent.getCalcWidth();
-		this.height = this.parent.getCalcHeight() * 0.195;
-		this.setMinWidth(this.width);
-		this.setMinHeight(this.height);
-		this.setMaxWidth(this.width);
-		this.setMaxHeight(this.height);
+		this.width = this.parent.getCalcWidth() * 0.625;
+		this.height = this.parent.getCalcHeight() * 0.4;
+		this.setFitWidth(this.width * 0.95);
+		this.setFitHeight(this.height * 0.95);
 	}
 }
