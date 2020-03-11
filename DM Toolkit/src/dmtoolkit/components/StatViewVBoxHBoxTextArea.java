@@ -1,17 +1,19 @@
-package dmtoolkit.views;
+package dmtoolkit.components;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.layout.BorderPane;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 
-public class ConsoleView extends BorderPane
+public class StatViewVBoxHBoxTextArea extends Label
 {
-	private RootView parent;
+	private StatViewVBoxHBox parent;
 	private double width;
 	private double height;
-	public ConsoleView(final RootView parent)
+
+	public StatViewVBoxHBoxTextArea(final StatViewVBoxHBox parent, final String text)
 	{
-		super();
+		super(text);
 
 		// parent setup
 		this.parent = parent;
@@ -20,7 +22,7 @@ public class ConsoleView extends BorderPane
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				ConsoleView.this.updateSizes();
+				StatViewVBoxHBoxTextArea.this.updateSizes();
 			}
 		});
 		this.parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -28,19 +30,18 @@ public class ConsoleView extends BorderPane
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				ConsoleView.this.updateSizes();
+				StatViewVBoxHBoxTextArea.this.updateSizes();
 			}
 		});
 
-		// style setup
-		this.setStyle("-fx-background-color: black; -fx-border-color: white;");
-
+		this.setAlignment(Pos.CENTER);
+		this.setStyle("-fx-font-size: 18; -fx-font-weight: bolder;");
 	}
 
 	public void updateSizes()
 	{
 		this.width = this.parent.getCalcWidth();
-		this.height = this.parent.getCalcHeight() * 0.195;
+		this.height = this.parent.getCalcHeight();
 		this.setMinWidth(this.width);
 		this.setMinHeight(this.height);
 		this.setMaxWidth(this.width);

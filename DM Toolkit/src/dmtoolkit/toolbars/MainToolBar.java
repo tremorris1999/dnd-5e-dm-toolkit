@@ -13,6 +13,8 @@ import javafx.scene.control.ToolBar;
 public class MainToolBar extends ToolBar
 {
 	private RootView parent;
+	@SuppressWarnings("unused")
+	private Node[] panes;
 	private ObservableList<Node> items;
 	private double width;
 	private double height;
@@ -89,12 +91,12 @@ public class MainToolBar extends ToolBar
 				System.out.println("xp pressed");
 			}
 		});
-		
+
 		npcBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override public void handle(final ActionEvent arg0)
 			{
-				parent.setCenter(panes[3]);				
+				parent.setCenter(panes[3]);
 			}
 		});
 

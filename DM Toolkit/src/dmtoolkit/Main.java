@@ -16,8 +16,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application
 {
-	public double windowWidth = 880;
-	public double windowHeight = 495;
+	public double windowWidth = 800;
+	public double windowHeight = 450;
 
 	@Override
 	public void start(final Stage primaryStage) {

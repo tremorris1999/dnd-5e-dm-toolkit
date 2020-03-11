@@ -1,7 +1,18 @@
 package dmtoolkit.views;
 
+import dmtoolkit.components.StatViewLabel;
+import dmtoolkit.components.StatViewScrollPane;
+import dmtoolkit.components.StatViewScrollPaneListView;
+import dmtoolkit.components.StatViewScrollPaneTextArea;
+import dmtoolkit.components.StatViewVBox;
+import dmtoolkit.components.StatViewVBoxHBox;
+import dmtoolkit.components.StatViewVBoxHBoxButton;
+import dmtoolkit.components.StatViewVBoxHBoxTextArea;
+import dmtoolkit.components.StatViewVBoxImageView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 
 
@@ -10,6 +21,9 @@ public class StatView extends BorderPane
 	private RootView parent;
 	private double width;
 	private double height;
+	private StatViewLabel statNameLabel;
+	private StatViewScrollPaneTextArea statData;
+	private StatViewVBoxHBoxTextArea[] stats;
 
 	public StatView(final RootView parent)
 	{
@@ -36,6 +50,128 @@ public class StatView extends BorderPane
 
 		// style setup
 		this.setStyle("-fx-background-color: blanchedalmond");
+
+
+
+
+
+		// left setup
+		StatViewVBox leftHolder = new StatViewVBox(this, 0.2, 1);
+
+		StatViewLabel statLabel = new StatViewLabel(leftHolder, "Stat Block Index");
+		StatViewScrollPane statIndex = new StatViewScrollPane(leftHolder, 0.9);
+		StatViewScrollPaneListView statList = new StatViewScrollPaneListView(statIndex);
+		statIndex.setContent(statList);
+
+		leftHolder.getChildren().add(statLabel);
+		leftHolder.getChildren().add(statIndex);
+
+		this.setLeft(leftHolder);
+
+
+
+
+
+		// center setup
+		StatViewVBox centerHolder = new StatViewVBox(this, 0.6, 1);
+
+		this.statNameLabel = new StatViewLabel(centerHolder, "");
+		statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
+
+			@Override
+			public void onChanged(final Change<? extends String> arg0)
+			{
+				StatView.this.setStatNameLabelText(arg0.getList().get(0));
+				String out = "";
+				for (int i = 0; i < Math.random() * 10000; i++)
+					out = out + "placeholder text ";
+				StatView.this.setStatDataText(out);
+				for (int i = 0; i < 6; i++)
+				{
+					StatView.this.getStats()[i].setText("" + (Math.round(Math.random() * 19) + 1));
+				}
+			}
+
+		});
+
+		StatViewScrollPane statDataPane = new StatViewScrollPane(centerHolder, 0.8);
+
+		this.statData = new StatViewScrollPaneTextArea(statDataPane);
+		this.statData.setWrapText(true);
+		this.statData.setEditable(false);
+
+		statDataPane.setContent(this.statData);
+
+		StatViewVBoxHBox statControls = new StatViewVBoxHBox(centerHolder, 1, 0.1);
+
+		StatViewVBoxHBoxButton addInstanceBtn = new StatViewVBoxHBoxButton(statControls, "Add to Combat");
+		StatViewVBoxHBoxButton addStatBtn = new StatViewVBoxHBoxButton(statControls, "New Stat Block");
+		StatViewVBoxHBoxButton deleteStatBtn = new StatViewVBoxHBoxButton(statControls, "Delete Stat Block");
+
+		statControls.getChildren().addAll(addInstanceBtn, addStatBtn, deleteStatBtn);
+
+
+		centerHolder.getChildren().addAll(this.statNameLabel, statDataPane, statControls);
+		centerHolder.setAlignment(Pos.CENTER);
+
+		this.setCenter(centerHolder);
+
+
+
+
+
+
+		// right setup
+		StatViewVBox rightHolder = new StatViewVBox(this, 0.2, 1);
+
+		StatViewVBoxImageView statImage = new StatViewVBoxImageView(rightHolder, "./img/placeholder.png");
+
+		StatViewVBox statShort = new StatViewVBox(this, 0.2, 0.6);
+
+		StatViewVBoxHBox statASL1 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+		StatViewVBoxHBox statAS1 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+		StatViewVBoxHBox statASL2 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+		StatViewVBoxHBox statAS2 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+		StatViewVBoxHBox statASL3 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+		StatViewVBoxHBox statAS3 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+
+		StatViewVBoxHBoxTextArea str = new StatViewVBoxHBoxTextArea(statAS1, "");
+		str.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
+		StatViewVBoxHBoxTextArea dex = new StatViewVBoxHBoxTextArea(statAS1, "");
+		dex.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
+		StatViewVBoxHBoxTextArea con = new StatViewVBoxHBoxTextArea(statAS2, "");
+		con.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
+		StatViewVBoxHBoxTextArea intl = new StatViewVBoxHBoxTextArea(statAS2, "");
+		intl.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
+		StatViewVBoxHBoxTextArea wis = new StatViewVBoxHBoxTextArea(statAS3, "");
+		wis.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
+		StatViewVBoxHBoxTextArea cha = new StatViewVBoxHBoxTextArea(statAS3, "");
+		cha.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
+
+		this.stats = new StatViewVBoxHBoxTextArea[6];
+		this.stats[0] = str;
+		this.stats[1] = dex;
+		this.stats[2] = con;
+		this.stats[3] = intl;
+		this.stats[4] = wis;
+		this.stats[5] = cha;
+
+		statASL1.getChildren().addAll(new StatViewVBoxHBoxTextArea(statASL1, "STR"), new StatViewVBoxHBoxTextArea(statAS1, "DEX"));
+		statAS1.getChildren().addAll(str, dex);
+		statASL2.getChildren().addAll(new StatViewVBoxHBoxTextArea(statASL1, "CON"), new StatViewVBoxHBoxTextArea(statAS1, "INT"));
+		statAS2.getChildren().addAll(con, intl);
+		statASL3.getChildren().addAll(new StatViewVBoxHBoxTextArea(statASL1, "WIS"), new StatViewVBoxHBoxTextArea(statAS1, "CHA"));
+		statAS3.getChildren().addAll(wis, cha);
+
+		statShort.getChildren().addAll(statASL1, statAS1, statASL2, statAS2, statASL3, statAS3);
+
+		rightHolder.getChildren().addAll(statImage, statShort);;
+		rightHolder.setAlignment(Pos.CENTER);
+
+
+		this.setRight(rightHolder);
+
+
 	}
 
 	public void updateSizes()
@@ -46,5 +182,30 @@ public class StatView extends BorderPane
 		this.setMinHeight(this.height);
 		this.setMaxWidth(this.width);
 		this.setMaxHeight(this.height);
+	}
+
+	public double getCalcWidth()
+	{
+		return this.width;
+	}
+
+	public double getCalcHeight()
+	{
+		return this.height;
+	}
+
+	public void setStatNameLabelText(final String text)
+	{
+		this.statNameLabel.setText(text);
+	}
+
+	public void setStatDataText(final String text)
+	{
+		this.statData.setText(text);
+	}
+
+	public StatViewVBoxHBoxTextArea[] getStats()
+	{
+		return this.stats;
 	}
 }
