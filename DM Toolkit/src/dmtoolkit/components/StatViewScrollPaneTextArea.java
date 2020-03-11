@@ -32,6 +32,9 @@ public class StatViewScrollPaneTextArea extends TextArea
 				StatViewScrollPaneTextArea.this.updateSizes();
 			}
 		});
+
+		// style setup
+		this.setStyle("-fx-font-size: 16;");
 	}
 
 	public void updateSizes()

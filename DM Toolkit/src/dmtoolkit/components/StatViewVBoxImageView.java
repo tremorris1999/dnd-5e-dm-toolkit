@@ -12,6 +12,7 @@ public class StatViewVBoxImageView extends ImageView
 	private StatViewVBox parent;
 	private double width;
 	private double height;
+	private Image image;
 
 	public StatViewVBoxImageView(final StatViewVBox parent, final String path)
 	{

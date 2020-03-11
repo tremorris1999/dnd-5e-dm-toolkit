@@ -1,12 +1,14 @@
 package dmtoolkit;
 
+import java.util.LinkedList;
+
+import dmtoolkit.entities.StatBlock;
 import dmtoolkit.toolbars.MainToolBar;
 import dmtoolkit.views.CombatView;
 import dmtoolkit.views.ConsoleView;
 import dmtoolkit.views.MainView;
-
-import dmtoolkit.views.RootView;
 import dmtoolkit.views.NPCView;
+import dmtoolkit.views.RootView;
 import dmtoolkit.views.StatView;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -24,7 +26,8 @@ public class Main extends Application
 		try {
 
 			RootView root = new RootView(this.windowWidth,this.windowHeight);
-			Node[] panes = {new MainView(root), new CombatView(root), new StatView(root), new NPCView()};
+			LinkedList<StatBlock> statBlocks = dmtoolkit.utility.StatIO.buildStats();
+			Node[] panes = {new MainView(root), new CombatView(root), new StatView(root, statBlocks), new NPCView()};
 
 			root.setTop(new MainToolBar(root, panes));
 			root.setCenter(panes[0]);

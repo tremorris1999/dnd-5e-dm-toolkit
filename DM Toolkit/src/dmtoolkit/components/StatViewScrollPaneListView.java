@@ -1,18 +1,23 @@
 package dmtoolkit.components;
 
+import java.util.LinkedList;
+
+import dmtoolkit.entities.StatBlock;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ListView;
 
-public class StatViewScrollPaneListView extends ListView<String> //TODO change to StatBlock once that exists
+public class StatViewScrollPaneListView extends ListView<StatBlock> //TODO change to StatBlock once that exists
 {
 	private StatViewScrollPane parent;
 	private double width;
 	private double height;
+	private LinkedList<StatBlock> statBlocks;
 
-	public StatViewScrollPaneListView(final StatViewScrollPane parent)
+	public StatViewScrollPaneListView(final StatViewScrollPane parent, final LinkedList<StatBlock> statBlocks)
 	{
 		super();
+		this.statBlocks = statBlocks;
 
 		// parent setup
 		this.parent = parent;
@@ -34,9 +39,8 @@ public class StatViewScrollPaneListView extends ListView<String> //TODO change t
 		});
 
 		// data setup
-		//TODO StatBlock type
-		for (int x = 0; x != 100; x++)
-			this.getItems().add("Placeholder #" + x);
+		for (StatBlock sb : this.statBlocks)
+			this.getItems().add(sb);
 
 	}
 

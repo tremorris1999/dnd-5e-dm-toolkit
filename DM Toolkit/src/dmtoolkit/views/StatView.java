@@ -1,5 +1,7 @@
 package dmtoolkit.views;
 
+import java.util.LinkedList;
+
 import dmtoolkit.components.StatViewLabel;
 import dmtoolkit.components.StatViewScrollPane;
 import dmtoolkit.components.StatViewScrollPaneListView;
@@ -9,10 +11,13 @@ import dmtoolkit.components.StatViewVBoxHBox;
 import dmtoolkit.components.StatViewVBoxHBoxButton;
 import dmtoolkit.components.StatViewVBoxHBoxTextArea;
 import dmtoolkit.components.StatViewVBoxImageView;
+import dmtoolkit.entities.StatBlock;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
 
@@ -24,10 +29,14 @@ public class StatView extends BorderPane
 	private StatViewLabel statNameLabel;
 	private StatViewScrollPaneTextArea statData;
 	private StatViewVBoxHBoxTextArea[] stats;
+	private LinkedList<StatBlock> statBlocks;
+	private StatViewVBoxImageView statImage;
+	private StatViewVBox rightHolder;
 
-	public StatView(final RootView parent)
+	public StatView(final RootView parent, final LinkedList<StatBlock> statBlocks)
 	{
 		super();
+		this.statBlocks = statBlocks;
 
 		// parent setup
 		this.parent = parent;
@@ -60,7 +69,7 @@ public class StatView extends BorderPane
 
 		StatViewLabel statLabel = new StatViewLabel(leftHolder, "Stat Block Index");
 		StatViewScrollPane statIndex = new StatViewScrollPane(leftHolder, 0.9);
-		StatViewScrollPaneListView statList = new StatViewScrollPaneListView(statIndex);
+		StatViewScrollPaneListView statList = new StatViewScrollPaneListView(statIndex,this.statBlocks);
 		statIndex.setContent(statList);
 
 		leftHolder.getChildren().add(statLabel);
@@ -76,20 +85,21 @@ public class StatView extends BorderPane
 		StatViewVBox centerHolder = new StatViewVBox(this, 0.6, 1);
 
 		this.statNameLabel = new StatViewLabel(centerHolder, "");
-		statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
+		statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<StatBlock>() {
 
 			@Override
-			public void onChanged(final Change<? extends String> arg0)
+			public void onChanged(final Change<? extends StatBlock> arg0)
 			{
-				StatView.this.setStatNameLabelText(arg0.getList().get(0));
-				String out = "";
-				for (int i = 0; i < Math.random() * 10000; i++)
-					out = out + "placeholder text ";
-				StatView.this.setStatDataText(out);
-				for (int i = 0; i < 6; i++)
-				{
-					StatView.this.getStats()[i].setText("" + (Math.round(Math.random() * 19) + 1));
-				}
+				StatView.this.setStatNameLabelText(arg0.getList().get(0).getName());
+				StatView.this.setStatDataText(arg0.getList().get(0).fullData());
+				StatView.this.setImage(arg0.getList().get(0).getImgPath());
+				StatView.this.getStats()[0].setText(arg0.getList().get(0).modStr());
+				StatView.this.getStats()[1].setText(arg0.getList().get(0).modDex());
+				StatView.this.getStats()[2].setText(arg0.getList().get(0).modCon());
+				StatView.this.getStats()[3].setText(arg0.getList().get(0).modIntl());
+				StatView.this.getStats()[4].setText(arg0.getList().get(0).modWis());
+				StatView.this.getStats()[5].setText(arg0.getList().get(0).modCha());
+
 			}
 
 		});
@@ -122,18 +132,18 @@ public class StatView extends BorderPane
 
 
 		// right setup
-		StatViewVBox rightHolder = new StatViewVBox(this, 0.2, 1);
+		this.rightHolder = new StatViewVBox(this, 0.2, 1);
 
-		StatViewVBoxImageView statImage = new StatViewVBoxImageView(rightHolder, "./img/placeholder.png");
+		this.statImage = new StatViewVBoxImageView(this.rightHolder, "./img/placeholder.png");
 
-		StatViewVBox statShort = new StatViewVBox(this, 0.2, 0.6);
+		StatViewVBox statShort = new StatViewVBox(this, 0.2, 0.60);
 
-		StatViewVBoxHBox statASL1 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
-		StatViewVBoxHBox statAS1 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
-		StatViewVBoxHBox statASL2 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
-		StatViewVBoxHBox statAS2 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
-		StatViewVBoxHBox statASL3 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
-		StatViewVBoxHBox statAS3 = new StatViewVBoxHBox(statShort, 0.5, 0.1666666);
+		StatViewVBoxHBox statASL1 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
+		StatViewVBoxHBox statAS1 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
+		StatViewVBoxHBox statASL2 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
+		StatViewVBoxHBox statAS2 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
+		StatViewVBoxHBox statASL3 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
+		StatViewVBoxHBox statAS3 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
 
 		StatViewVBoxHBoxTextArea str = new StatViewVBoxHBoxTextArea(statAS1, "");
 		str.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
@@ -165,11 +175,10 @@ public class StatView extends BorderPane
 
 		statShort.getChildren().addAll(statASL1, statAS1, statASL2, statAS2, statASL3, statAS3);
 
-		rightHolder.getChildren().addAll(statImage, statShort);;
-		rightHolder.setAlignment(Pos.CENTER);
+		this.rightHolder.getChildren().addAll(this.statImage, statShort);;
+		this.rightHolder.setAlignment(Pos.CENTER);
 
-
-		this.setRight(rightHolder);
+		this.setRight(this.rightHolder);
 
 
 	}
@@ -182,6 +191,7 @@ public class StatView extends BorderPane
 		this.setMinHeight(this.height);
 		this.setMaxWidth(this.width);
 		this.setMaxHeight(this.height);
+		this.rightHolder.setPadding(new Insets(this.height * 0.02, 0, 0, 0));
 	}
 
 	public double getCalcWidth()
@@ -207,5 +217,15 @@ public class StatView extends BorderPane
 	public StatViewVBoxHBoxTextArea[] getStats()
 	{
 		return this.stats;
+	}
+
+	public void setImage(final String url)
+	{
+		this.statImage = new StatViewVBoxImageView(this.rightHolder, url);
+		this.statImage.updateSizes();
+		Node otherNode = this.rightHolder.getChildren().remove(1);
+		for (int i = 0; i < this.rightHolder.getChildren().size(); i++)
+			this.rightHolder.getChildren().remove(i);
+		this.rightHolder.getChildren().addAll(this.statImage, otherNode);
 	}
 }

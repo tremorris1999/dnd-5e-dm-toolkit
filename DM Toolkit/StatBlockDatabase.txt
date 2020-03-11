@@ -1,0 +1,55 @@
+1
+Aarakocra
+Medium humanoid
+neutral good
+12
+13
+20
+0
+0
+50
+10
+14
+10
+11
+12
+11
+0
+1
+Perception + 5
+1
+passive Perception 15
+1
+Auran
+0.25
+1
+Dive Attack. If the aarakocra is flying and dives at least 30 feet straight toward a target and then hits it with a melee weapon attack, the attack deals an extra 3 (1d6) damage to the target.
+2
+Talon. Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 4 (ld4 + 2) slashing damage
+Javelin. Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 30/120 ft., one target. Hit: 5 (1d6 + 2) piercing damage.
+0
+./img/aarakocra.png
+false
+	Aarakocra range the Howling Gyre, an end less storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies. 
+
+	Enemies of Elemental Evil: In service to the Wind Dukes of Aaqa, aarakocra scout the planes in search of temples of Elemental Evil. They spy on malign elemental creatures and then either take the fi ght to those creatures or report back to the Wind Dukes. On the Material Plane, aarakocra create aeries atop the highest mountains, especially peaks near portals to the Elemental Plane of Air. From such heights, aarakocra watch for signs of elemental incursions, as well as for nascent threats to their home plane. Aarakocra prefer to live their lives like the wind- unburdened and ever moving- yet they watch over a region for years if that's what it takes to guard against the incursions of Elemental Evil. Aarakocra have no concept of political borders or property ownership, and the value of gems, gold, and other precious materials means little to aarakocra. In their eyes, a creature should use what is necessary and then cast what is left on the wind for others to use. 
+
+	Search for the Seven Shards: The Wind Dukes of Aaqa come from a race of elemental beings called the vaati, which once ruled many worlds. A creature known as the Queen of Chaos arose and initiated an interplana r war against vaati rule. To combat the threat, seven vaati heroes combined their powers to create the mighty Rod of Law. In a battle against the queen's greatest general, Mishka the Wolf Spider, a vaati killed Mishka by thrusting the rod into him like a spear. The rod shattered into seven shards that scattered across the multiverse. Aaracokra seek signs of the pieces' locations in order to rebuild what is now know as the Rod of Seven Parts.
+
+(endLore)
+Aboleth
+Large abberation
+lawful evil
+17
+135
+10
+40
+0
+0
+21
+9
+15
+18
+15
+18
+3 SAVES
