@@ -13,6 +13,7 @@ import javafx.scene.control.ToolBar;
 public class MainToolBar extends ToolBar
 {
 	private RootView parent;
+	@SuppressWarnings("unused")
 	private Node[] panes;
 	private ObservableList<Node> items;
 	private double width;
