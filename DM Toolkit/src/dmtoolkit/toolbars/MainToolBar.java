@@ -1,6 +1,7 @@
 package dmtoolkit.toolbars;
 
-import dmtoolkit.components.MainToolBarButton;
+import dmtoolkit.components.ScaledButton;
+import dmtoolkit.interfaces.Scalable;
 import dmtoolkit.views.RootView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,9 +11,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
 
-public class MainToolBar extends ToolBar
+public class MainToolBar extends ToolBar implements Scalable
 {
-	private RootView parent;
+	private Scalable parent;
 	@SuppressWarnings("unused")
 	private Node[] panes;
 	private ObservableList<Node> items;
@@ -44,10 +45,11 @@ public class MainToolBar extends ToolBar
 			}
 		});
 
+		double children = 1.0/6.0; // CHANGE THIS DENOMINATOR IF YOU ADD MORE BUTTONS
 
-		MainToolBarButton mainBtn = new MainToolBarButton("Main", this), combatBtn = new MainToolBarButton("Combat Tracker", this);
-		MainToolBarButton statBtn = new MainToolBarButton("Stat Blocks", this), xpBtn = new MainToolBarButton("XP Manager", this);
-		MainToolBarButton npcBtn = new MainToolBarButton("NPC Manager", this), prefBtn = new MainToolBarButton("Preferences", this);
+		ScaledButton mainBtn = new ScaledButton(this, "Main", children, 1), combatBtn = new ScaledButton(this,"Combat Tracker", children, 1);
+		ScaledButton statBtn = new ScaledButton(this, "Stat Blocks", children, 1), xpBtn = new ScaledButton(this, "XP Manager", children, 1);
+		ScaledButton npcBtn = new ScaledButton(this, "NPC Manager", children, 1), prefBtn = new ScaledButton(this, "Preferences", children, 1);
 
 		this.items.add(mainBtn);
 		this.items.add(combatBtn);
@@ -109,6 +111,7 @@ public class MainToolBar extends ToolBar
 		});
 	}
 
+	@Override
 	public void updateSizes()
 	{
 		this.width = this.parent.getCalcWidth();
@@ -119,18 +122,27 @@ public class MainToolBar extends ToolBar
 		this.setMaxHeight(this.height);
 	}
 
+	@Override
 	public double getCalcWidth()
 	{
 		return this.width;
 	}
 
+	@Override
 	public double getCalcHeight()
 	{
 		return this.height;
 	}
 
-	public double getChildCount()
+	@Override
+	public int getChildCount()
 	{
-		return 1.0 / this.size;
+		return this.size;
+	}
+
+	@Override
+	public Scalable getScaleParent()
+	{
+		return this.parent;
 	}
 }

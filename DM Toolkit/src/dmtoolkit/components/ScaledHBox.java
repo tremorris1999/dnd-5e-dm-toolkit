@@ -1,21 +1,23 @@
 package dmtoolkit.components;
 
+import dmtoolkit.interfaces.Scalable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
+import javafx.scene.layout.HBox;
 
-public class GenericViewLabel<T extends BorderPane> extends Label
+public class ScaledHBox extends HBox implements Scalable
 {
-	private GenericViewVBox<T> parent;
+	private Scalable parent;
 	private double width;
 	private double height;
+	private double widthPerc;
+	private double heightPerc;
 
-	public GenericViewLabel(final GenericViewVBox<T> parent, final String text)
+	public ScaledHBox(final Scalable parent, final double widthPerc, final double heightPerc)
 	{
-		super(text);
+		super();
+		this.widthPerc = widthPerc;
+		this.heightPerc = heightPerc;
 
 		// parent setup
 		this.parent = parent;
@@ -24,7 +26,7 @@ public class GenericViewLabel<T extends BorderPane> extends Label
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				GenericViewLabel.this.updateSizes();
+				ScaledHBox.this.updateSizes();
 			}
 		});
 		this.parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -32,33 +34,43 @@ public class GenericViewLabel<T extends BorderPane> extends Label
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				GenericViewLabel.this.updateSizes();
+				ScaledHBox.this.updateSizes();
 			}
 		});
-
-		// style setup
-		this.setFont(new Font(24));
-		this.setAlignment(Pos.CENTER);
 	}
 
+	@Override
 	public void updateSizes()
 	{
-		this.width = this.parent.getCalcWidth();
-		this.height = this.parent.getCalcHeight() * 0.1;
+		this.width = this.parent.getCalcWidth() * this.widthPerc;
+		this.height = this.parent.getCalcHeight() * this.heightPerc;
 		this.setMinWidth(this.width);
 		this.setMinHeight(this.height);
 		this.setMaxWidth(this.width);
 		this.setMaxHeight(this.height);
 	}
 
+	@Override
 	public double getCalcWidth()
 	{
 		return this.width;
 	}
 
+	@Override
 	public double getCalcHeight()
 	{
 		return this.height;
 	}
 
+	@Override
+	public Scalable getScaleParent()
+	{
+		return this.parent;
+	}
+
+	@Override
+	public int getChildCount()
+	{
+		return this.getChildren().size();
+	}
 }

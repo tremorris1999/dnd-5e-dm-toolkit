@@ -11,9 +11,9 @@ public class StatIO
 	public static final String PATH = "StatBlockDatabase.txt";
 	private static Scanner scan;
 
-	public static java.util.LinkedList<StatBlock> buildStats() throws FileNotFoundException
+	public static ObservableLinkedList<StatBlock> buildStats() throws FileNotFoundException
 	{
-		java.util.LinkedList<StatBlock> statBlocks = new java.util.LinkedList<StatBlock>();
+		ObservableLinkedList<StatBlock> statBlocks = new ObservableLinkedList<StatBlock>();
 		File fin = new File(PATH);
 		scan = new Scanner(fin);
 		int total = Integer.parseInt(scan.nextLine());

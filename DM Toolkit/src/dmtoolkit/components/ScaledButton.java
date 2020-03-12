@@ -1,22 +1,25 @@
 package dmtoolkit.components;
 
-import dmtoolkit.toolbars.MainToolBar;
+import dmtoolkit.interfaces.Scalable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 
-public class MainToolBarButton extends Button
+public class ScaledButton extends Button implements Scalable
 {
-	private MainToolBar parent;
+	private Scalable parent;
 	private double width;
 	private double height;
+	private double widthPerc;
+	private double heightPerc;
 
-	public MainToolBarButton(final String text, final MainToolBar parent)
+	public ScaledButton(final Scalable parent, final String text, final double widthPerc, final double heightPerc)
 	{
 		super(text);
 		this.parent = parent;
-		this.updateSizes();
+		this.widthPerc = widthPerc;
+		this.heightPerc = heightPerc;
 		this.setAlignment(Pos.CENTER);
 
 		parent.widthProperty().addListener(new ChangeListener<Number>()
@@ -24,7 +27,7 @@ public class MainToolBarButton extends Button
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				MainToolBarButton.this.updateSizes();
+				ScaledButton.this.updateSizes();
 			}
 		});
 		parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -32,19 +35,44 @@ public class MainToolBarButton extends Button
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				MainToolBarButton.this.updateSizes();
+				ScaledButton.this.updateSizes();
 			}
 		});
 	}
 
+	@Override
 	public void updateSizes()
 	{
-		this.width = this.parent.getCalcWidth() * this.parent.getChildCount();
-		this.height = this.parent.getCalcHeight();
+		this.width = this.parent.getCalcWidth() * this.widthPerc;
+		this.height = this.parent.getCalcHeight() * this.heightPerc;
 		this.setMinWidth(this.width);
 		this.setMinHeight(this.height);
 		this.setMinWidth(this.width);
 		this.setMinHeight(this.height);
+	}
+
+	@Override
+	public Scalable getScaleParent()
+	{
+		return this.parent;
+	}
+
+	@Override
+	public double getCalcWidth()
+	{
+		return this.width;
+	}
+
+	@Override
+	public double getCalcHeight()
+	{
+		return this.height;
+	}
+
+	@Override
+	public int getChildCount()
+	{
+		return this.getChildren().size();
 	}
 
 }

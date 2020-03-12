@@ -1,31 +1,35 @@
 package dmtoolkit.components;
 
+import dmtoolkit.interfaces.Scalable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 
-public class StatViewVBoxHBox extends HBox
+public class ScaledLabel extends Label implements Scalable
 {
-	private StatViewVBox parent;
+	private Scalable parent;
 	private double width;
 	private double height;
 	private double widthPerc;
 	private double heightPerc;
 
-	public StatViewVBoxHBox(final StatViewVBox parent, final double widthPerc, final double heightPerc)
+	public ScaledLabel(final Scalable parent, final String text, final double widthPerc, final double heightPerc)
 	{
-		super();
+		super(text);
+		this.parent = parent;
 		this.widthPerc = widthPerc;
 		this.heightPerc = heightPerc;
+		this.setAlignment(Pos.CENTER);
+		this.setStyle("-fx-font-weight: bolder;");
 
 		// parent setup
-		this.parent = parent;
 		this.parent.widthProperty().addListener(new ChangeListener<Number>()
 		{
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				StatViewVBoxHBox.this.updateSizes();
+				ScaledLabel.this.updateSizes();
 			}
 		});
 		this.parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -33,11 +37,12 @@ public class StatViewVBoxHBox extends HBox
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				StatViewVBoxHBox.this.updateSizes();
+				ScaledLabel.this.updateSizes();
 			}
 		});
 	}
 
+	@Override
 	public void updateSizes()
 	{
 		this.width = this.parent.getCalcWidth() * this.widthPerc;
@@ -48,13 +53,27 @@ public class StatViewVBoxHBox extends HBox
 		this.setMaxHeight(this.height);
 	}
 
+	@Override
 	public double getCalcWidth()
 	{
 		return this.width;
 	}
 
+	@Override
 	public double getCalcHeight()
 	{
 		return this.height;
+	}
+
+	@Override
+	public Scalable getScaleParent()
+	{
+		return this.parent;
+	}
+
+	@Override
+	public int getChildCount()
+	{
+		return this.getChildren().size();
 	}
 }

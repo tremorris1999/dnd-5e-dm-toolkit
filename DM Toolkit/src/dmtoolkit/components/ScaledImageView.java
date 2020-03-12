@@ -2,20 +2,20 @@ package dmtoolkit.components;
 
 import java.io.File;
 
+import dmtoolkit.interfaces.Scalable;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 
-public class GenericViewVBoxImageView<T extends BorderPane> extends ImageView
+public class ScaledImageView extends ImageView implements Scalable
 {
-	private GenericViewVBox<T> parent;
+	private Scalable parent;
 	private double width;
 	private double height;
-	private Image image;
 
-	public GenericViewVBoxImageView(final GenericViewVBox<T> parent, final String path)
+	public ScaledImageView(final Scalable parent, final String path)
 	{
 		super(new Image(new File(path).toURI().toString()));
 
@@ -26,7 +26,7 @@ public class GenericViewVBoxImageView<T extends BorderPane> extends ImageView
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				GenericViewVBoxImageView.this.updateSizes();
+				ScaledImageView.this.updateSizes();
 			}
 		});
 		this.parent.heightProperty().addListener(new ChangeListener<Number>()
@@ -34,16 +34,53 @@ public class GenericViewVBoxImageView<T extends BorderPane> extends ImageView
 			@Override
 			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				GenericViewVBoxImageView.this.updateSizes();
+				ScaledImageView.this.updateSizes();
 			}
 		});
 	}
 
+	@Override
 	public void updateSizes()
 	{
 		this.width = this.parent.getCalcWidth() * 0.625;
 		this.height = this.parent.getCalcHeight() * 0.4;
 		this.setFitWidth(this.width * 0.95);
 		this.setFitHeight(this.height * 0.95);
+	}
+
+	@Override
+	public Scalable getScaleParent()
+	{
+		return this.parent;
+	}
+
+	@Override
+	public double getCalcWidth()
+	{
+		return this.width;
+	}
+
+	@Override
+	public double getCalcHeight()
+	{
+		return this.height;
+	}
+
+	@Override
+	public ReadOnlyDoubleProperty widthProperty()
+	{
+		return null; // not applicable for this class
+	}
+
+	@Override
+	public ReadOnlyDoubleProperty heightProperty()
+	{
+		return null; // not applicable for this class
+	}
+
+	@Override
+	public int getChildCount()
+	{
+		return 0; // not applicable for this class
 	}
 }

@@ -1,6 +1,6 @@
 package dmtoolkit.entities;
 
-public class StatBlock
+public class StatBlock implements Comparable<StatBlock>
 {
 	private String name;
 	private String type;
@@ -490,5 +490,11 @@ public class StatBlock
 
 	public void setLore(final String lore) {
 		this.lore = lore;
+	}
+
+	@Override
+	public int compareTo(final StatBlock that)
+	{
+		return this.name.compareTo(that.name);
 	}
 }
