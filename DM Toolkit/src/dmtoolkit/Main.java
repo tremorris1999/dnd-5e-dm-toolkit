@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import dmtoolkit.entities.StatBlock;
 import dmtoolkit.toolbars.MainToolBar;
+import dmtoolkit.utility.NPC;
 import dmtoolkit.views.CombatView;
 import dmtoolkit.views.ConsoleView;
 import dmtoolkit.views.MainView;
@@ -27,7 +28,8 @@ public class Main extends Application
 
 			RootView root = new RootView(this.windowWidth,this.windowHeight);
 			LinkedList<StatBlock> statBlocks = dmtoolkit.utility.StatIO.buildStats();
-			Node[] panes = {new MainView(root), new CombatView(root), new StatView(root, statBlocks), new NPCView()};
+			LinkedList<NPC> npcBlocks = new LinkedList<NPC>();
+			Node[] panes = {new MainView(root), new CombatView(root), new StatView(root, statBlocks), new NPCView(root, npcBlocks)};
 
 			root.setTop(new MainToolBar(root, panes));
 			root.setCenter(panes[0]);

@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.Scanner;
 
 public class NPC {
-	private String apperance, highAbility, lowAbility, talents, manerisms, 
+	private String name, apperance, highAbility, lowAbility, talents, manerisms, 
 				   interactionTraits, ideas, bonds, flawsNSecrets;
 	
 	public NPC() {
+		this.name = "Default Name";
 		this.apperance = random("InputFiles/npc-appearance.txt");
 		this.highAbility = random("InputFiles/npc-abilities-high.txt");
 		this.lowAbility = random("InputFiles/npc-abilities-low.txt");
@@ -18,7 +19,9 @@ public class NPC {
 		this.bonds = random("InputFiles/npc-bonds.txt");
 		this.flawsNSecrets = random("InputFiles/npc-flaws-secrets.txt");
 	}
-	
+	public String name() {
+		return this.name;
+	}
 	public String appearance() {
 		return this.apperance;
 	}

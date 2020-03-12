@@ -1,212 +1,204 @@
 package dmtoolkit.views;
 
-import java.io.File;
+import java.util.LinkedList;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import dmtoolkit.components.GenericViewLabel;
+import dmtoolkit.components.GenericViewScrollPane;
+import dmtoolkit.components.GenericViewScrollPaneListView;
+import dmtoolkit.components.GenericViewScrollPaneTextArea;
+import dmtoolkit.components.GenericViewVBox;
+import dmtoolkit.components.GenericViewVBoxHBox;
+import dmtoolkit.components.GenericViewVBoxHBoxButton;
+import dmtoolkit.components.GenericViewVBoxHBoxTextArea;
+import dmtoolkit.components.GenericViewVBoxImageView;
+import dmtoolkit.components.StatViewLabel;
+import dmtoolkit.components.StatViewScrollPane;
+import dmtoolkit.components.StatViewScrollPaneListView;
+import dmtoolkit.components.StatViewScrollPaneTextArea;
+import dmtoolkit.components.StatViewVBox;
+import dmtoolkit.components.StatViewVBoxHBox;
+import dmtoolkit.components.StatViewVBoxHBoxButton;
+import dmtoolkit.components.StatViewVBoxHBoxTextArea;
+import dmtoolkit.components.StatViewVBoxImageView;
+import dmtoolkit.entities.StatBlock;
+import dmtoolkit.utility.NPC;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
-
-import dmtoolkit.utility.*;
 
 
 public class NPCView extends BorderPane
 {
-	public NPCView()
+	private RootView parent;
+	private double width;
+	private double height;
+	private GenericViewLabel<NPCView> statNameLabel;
+	private GenericViewScrollPaneTextArea<NPCView> statData;
+	private GenericViewVBoxHBoxTextArea[] stats;
+	private LinkedList<NPC> statBlocks;
+	private GenericViewVBoxImageView<NPCView> statImage;
+	private GenericViewVBox<NPCView> rightHolder;
+	private GenericViewScrollPaneListView<NPCView, NPC> statList;
+
+	public NPCView(final RootView parent, final LinkedList<NPC> statBlocks)	
 	{
 		super();
-		this.setStyle("-fx-background-color: black");
-
-		// left
-		Label leftLabel = new Label("NPC's");
-		leftLabel.setStyle("-fx-background-color: white; -fx-font-size: 24; -fx-alignment: center;");
-		leftLabel.setMinSize(300, 50);
-
-		HBox npcMenu = new HBox();
-		npcMenu.setStyle("-fx-background-color: white;");		
-
-		ScrollPane statList = new ScrollPane();
-		statList.setMinSize(300, 850);
-		
-		FlowPane npcListContainer = new FlowPane();
-		npcListContainer.setStyle("-fx-background-color: white;");
-		npcListContainer.setMaxSize(300, 850);
-		npcListContainer.setMinSize(300, 850);		
-		
-		Button createNPCBtn = new Button("Create NPC");
-		Button deleteLastBtn = new Button("Delete Last");
-		
-		npcMenu.getChildren().addAll(createNPCBtn, deleteLastBtn);
-		
-		// center
-		// main container for center
-		VBox npcContent = new VBox();
-		npcContent.setStyle("-fx-background-color: white;");
-
-		/* Linked list of element type button and object type NPC
-		 * This allows a button to be attached to a class of information */
-		LinkedList<Button, NPC> ButtonList = new LinkedList<Button, NPC>();
-		
-		/* Creates a new NPC button and Class and adds it to the ButtonList for managment */
-		createNPCBtn.setOnAction(new EventHandler<ActionEvent>()
+		this.statBlocks = statBlocks;	
+		// parent setup
+		this.parent = parent;
+		this.parent.widthProperty().addListener(new ChangeListener<Number>()
 		{
-			@Override public void handle(final ActionEvent arg0)
+			@Override
+			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				Button newNPCBtn = new Button("NPC Name");
-				NPC npc = new NPC();
-				/* when the button is clicked update the content on the page with current button object */
-				newNPCBtn.setOnAction(e -> showNPC(npc, npcContent));
-				ButtonList.add(new Node<Button, NPC>(newNPCBtn, npc));
-				npcListContainer.getChildren().add(newNPCBtn);
+				NPCView.this.updateSizes();
 			}
 		});
-		
-		/* Remove a button element from the list and remove it from the container */
-		deleteLastBtn.setOnAction(new EventHandler<ActionEvent>()
+		this.parent.heightProperty().addListener(new ChangeListener<Number>()
 		{
-			@Override public void handle(final ActionEvent arg0)
+			@Override
+			public void changed(final ObservableValue<? extends Number> value, final Number oldValue, final Number newValue)
 			{
-				if(ButtonList.size() > 0)
-					npcListContainer.getChildren().remove(ButtonList.remove().element());
+				NPCView.this.updateSizes();
 			}
 		});
+
+		// style setup
+		this.setStyle("-fx-background-color: blanchedalmond");
+
+
+		// left setup
+		GenericViewVBox<NPCView> leftHolder = new GenericViewVBox<NPCView>(this, 0.2, 1);
+
+		GenericViewLabel<NPCView> statLabel = new GenericViewLabel<NPCView>(leftHolder, "NPC's");
+		GenericViewScrollPane<NPCView> statIndex = new GenericViewScrollPane<NPCView>(leftHolder, 0.9);
+		statList = new GenericViewScrollPaneListView<NPCView, NPC>(statIndex, this.statBlocks);
+		statIndex.setContent(statList);
 		
-		VBox leftHolder = new VBox(leftLabel, npcMenu, npcListContainer);
-		leftHolder.setStyle("-fx-border-color: black;");
+		leftHolder.getChildren().add(statLabel);
+		leftHolder.getChildren().add(statIndex);
 
 		this.setLeft(leftHolder);
-		
 
-		//right
-		Image statPic = new Image(new File("img/placeholder.png").toURI().toString());
-		ImageView iv = new ImageView(statPic);
-		iv.setFitHeight(250);
-		iv.setFitWidth(250);
-		iv.setPreserveRatio(true);
+		// center setup
+		GenericViewVBox<NPCView> centerHolder = new GenericViewVBox<NPCView>(this, .6, 1);
+//		StatViewVBox centerHolder = new StatViewVBox(this, 0.6, 1);
 
-		VBox ivHolder = new VBox(iv);
-		ivHolder.setAlignment(Pos.CENTER);
-		ivHolder.setMinSize(300, 300);
+		this.statNameLabel = new GenericViewLabel<NPCView>(centerHolder, "");
+		statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<NPC>() {
 
-		TextArea placeholder = new TextArea("Placeholder");
-		placeholder.setMinSize(300, 600);
-		placeholder.setMaxSize(300, 600);
+			@Override
+			public void onChanged(final Change<? extends NPC> arg0)
+			{
+				NPCView.this.setStatNameLabelText(arg0.getList().get(0).name());
+				/*
+				NPCView2.this.setStatDataText(arg0.getList().get(0).fullData());
+				NPCView2.this.setImage(arg0.getList().get(0).getImgPath());
+				NPCView2.this.getStats()[0].setText(arg0.getList().get(0).modStr());
+				NPCView2.this.getStats()[1].setText(arg0.getList().get(0).modDex());
+				NPCView2.this.getStats()[2].setText(arg0.getList().get(0).modCon());
+				NPCView2.this.getStats()[3].setText(arg0.getList().get(0).modIntl());
+				NPCView2.this.getStats()[4].setText(arg0.getList().get(0).modWis());
+				NPCView2.this.getStats()[5].setText(arg0.getList().get(0).modCha());
+				*/
 
-		VBox rightHolder = new VBox(ivHolder, placeholder);
-		rightHolder.setMaxSize(300, 900);
-		rightHolder.setMinSize(300, 900);
-		rightHolder.setStyle("-fx-background-color: white; -fx-border-color: black;");
+			}
 
-		this.setRight(rightHolder);
+		});
 
+		GenericViewScrollPane<NPCView> statDataPane = new GenericViewScrollPane<NPCView>(centerHolder, 0.8);
+
+		this.statData = new GenericViewScrollPaneTextArea<NPCView>(statDataPane);
+		this.statData.setWrapText(true);
+		this.statData.setEditable(false);
+
+		statDataPane.setContent(this.statData);
+
+		GenericViewVBoxHBox<NPCView> statControls = new GenericViewVBoxHBox<NPCView>(centerHolder, 1, 0.1);
+
+		GenericViewVBoxHBoxButton<NPCView> addInstanceBtn = new GenericViewVBoxHBoxButton<NPCView>(statControls, "Add NPC");
+		GenericViewVBoxHBoxButton<NPCView> deleteStatBtn = new GenericViewVBoxHBoxButton<NPCView>(statControls, "Delete First NPC");
+		statControls.getChildren().addAll(addInstanceBtn, deleteStatBtn);
+		addInstanceBtn.setOnAction(event -> addNPC());
+		deleteStatBtn.setOnAction(event -> removeNPC());
+		centerHolder.getChildren().addAll(this.statNameLabel, statDataPane, statControls);
+		centerHolder.setAlignment(Pos.CENTER);
+
+		this.setCenter(centerHolder);
+
+
+
+
+
+
+		// right setup
+		this.rightHolder = new GenericViewVBox<NPCView>(this, 0.2, 1);
+
+		this.statImage = new GenericViewVBoxImageView<NPCView>(this.rightHolder, "./img/placeholder.png");
+
+		this.rightHolder.getChildren().addAll(this.statImage);//, statShort);;
+		this.rightHolder.setAlignment(Pos.CENTER);
+
+		this.setRight(this.rightHolder);
+	}
+
+	public void updateSizes()
+	{
+		this.width = this.parent.getCalcWidth();
+		this.height = this.parent.getCalcHeight() * 0.75;
+		this.setMinWidth(this.width);
+		this.setMinHeight(this.height);
+		this.setMaxWidth(this.width);
+		this.setMaxHeight(this.height);
+		this.rightHolder.setPadding(new Insets(this.height * 0.02, 0, 0, 0));
+	}
+
+	public double getCalcWidth()
+	{
+		return this.width;
+	}
+
+	public double getCalcHeight()
+	{
+		return this.height;
+	}
+
+	public void setStatNameLabelText(final String text)
+	{
+		this.statNameLabel.setText(text);
+	}
+
+	public void setStatDataText(final String text)
+	{
+		this.statData.setText(text);
+	}
+
+	public GenericViewVBoxHBoxTextArea[] getStats()
+	{
+		return this.stats;
+	}
+
+	public void setImage(final String url)
+	{
+		this.statImage = new GenericViewVBoxImageView<NPCView>(this.rightHolder, url);
+		this.statImage.updateSizes();
+		Node otherNode = this.rightHolder.getChildren().remove(1);
+		for (int i = 0; i < this.rightHolder.getChildren().size(); i++)
+			this.rightHolder.getChildren().remove(i);
+		this.rightHolder.getChildren().addAll(this.statImage, otherNode);
 	}
 	
-	/* re-roll specific trait and re draw the content view */
-	public void reRollNPC(NPC object, String trait, VBox npcContent) {
-		object.reRoll(trait);
-		showNPC(object, npcContent);
+	public void addNPC() {
+		NPC npc = new NPC();
+		statList.getItems().add(npc);
 	}
 	
-	/* show the specified object in the content view */
-	public void showNPC(NPC object, VBox npcContent) {
-		npcContent.getChildren().clear();		
-		HBox name= new HBox();
-		Label nameLabel = new Label("Name: ");
-		nameLabel.setStyle("-fx-font-size: 24;");
-		name.getChildren().addAll(nameLabel);
-		
-		/* Appearance block */
-		HBox appearance = new HBox();
-		Label appearanceLabel = new Label("Appearance: ");
-		appearanceLabel.setStyle("-fx-font-size: 24;");
-		Button reRollApperanceBtn = new Button("reroll");			
-		reRollApperanceBtn.setOnAction(event -> reRollNPC(object, "appearance", npcContent));		
-		Label appearanceDescription = new Label(object.appearance());
-		appearance.getChildren().addAll(appearanceLabel, appearanceDescription, reRollApperanceBtn);
-		
-		/* High Ability block */
-		HBox highAbility= new HBox();
-		Label highAbilityLabel = new Label("High Ability: ");
-		highAbilityLabel.setStyle("-fx-font-size: 24;");
-		Label highAbilityDescription = new Label(object.highAbility());
-		Button reRollHighAbilityBtn = new Button("reroll");					
-		reRollHighAbilityBtn.setOnAction(event -> reRollNPC(object, "highAbility", npcContent));
-		highAbility.getChildren().addAll(highAbilityLabel, highAbilityDescription, reRollHighAbilityBtn);
-		
-		/* Low Ability block */
-		HBox lowAbility= new HBox();
-		Label lowAbilityLabel = new Label("Low Ability: ");
-		lowAbilityLabel.setStyle("-fx-font-size: 24;");
-		Label lowAbilityDescription = new Label(object.lowAbility());
-		Button reRollLowAbilityBtn = new Button("reroll");				
-		reRollLowAbilityBtn.setOnAction(event -> reRollNPC(object, "lowAbility", npcContent));
-		lowAbility.getChildren().addAll(lowAbilityLabel, lowAbilityDescription, reRollLowAbilityBtn);
-		
-		/* Talents block */
-		HBox talents = new HBox();
-		Label talentsLabel = new Label("Talents: ");
-		talentsLabel.setStyle("-fx-font-size: 24;");
-		Label talentsDescription = new Label(object.talents());
-		Button reRollTalentsBtn = new Button("reroll");							
-		reRollTalentsBtn.setOnAction(event -> reRollNPC(object, "talents", npcContent));
-		talents.getChildren().addAll(talentsLabel, talentsDescription, reRollTalentsBtn);
-		
-		/* Manerisms block */
-		HBox manerisms = new HBox();
-		Label manerismsLabel = new Label("Manerisms: ");
-		manerismsLabel.setStyle("-fx-font-size: 24;");
-		Label manerismsDescription = new Label(object.manerisms());
-		Button reRollManerismsBtn = new Button("reroll");						
-		reRollManerismsBtn.setOnAction(event -> reRollNPC(object, "manerisms", npcContent));
-		manerisms.getChildren().addAll(manerismsLabel, manerismsDescription, reRollManerismsBtn);
-	
-		/* Interaction Trait block */
-		HBox interactionTrait = new HBox();
-		Label interactionTraitLabel = new Label("Interaction Traits: ");
-		interactionTraitLabel.setStyle("-fx-font-size: 24;");
-		Label interactionTraitDescription = new Label(object.interactionTraits());
-		Button reRollinteractionTraitBtn = new Button("reroll");						
-		reRollinteractionTraitBtn.setOnAction(event -> reRollNPC(object, "interactionTraits", npcContent));
-		interactionTrait.getChildren().addAll(interactionTraitLabel, interactionTraitDescription, reRollinteractionTraitBtn);
-		
-		/* Ideas block */
-		HBox ideas = new HBox();
-		Label ideasLabel = new Label("Ideas: ");
-		ideasLabel.setStyle("-fx-font-size: 24;");
-		Label ideasDescription = new Label(object.ideas());
-		Button reRollideasBtn = new Button("reroll");				
-		reRollideasBtn.setOnAction(event -> reRollNPC(object, "ideas", npcContent));
-		ideas.getChildren().addAll(ideasLabel, ideasDescription, reRollideasBtn);
-		
-		/* Bonds block */
-		HBox bonds = new HBox();
-		Label bondsLabel = new Label("Bonds: ");
-		bondsLabel.setStyle("-fx-font-size: 24;");
-		Label bondsDescription = new Label(object.bonds());
-		Button reRollBondsBtn = new Button("reroll");
-		reRollBondsBtn.setOnAction(event -> reRollNPC(object, "bonds", npcContent));
-		bonds.getChildren().addAll(bondsLabel, bondsDescription, reRollBondsBtn);
-		
-		/* Flaws and Secrets block */
-		HBox flawsSecerets= new HBox();
-		Label flawsSeceretsLabel = new Label("Flaws n Secerets: ");
-		flawsSeceretsLabel.setStyle("-fx-font-size: 24;");
-		Label flawsSeceretsDescription = new Label(object.flawsNSecrets());
-		Button reRollFlawsSeceretsBtn = new Button("reroll");		
-		reRollFlawsSeceretsBtn.setOnAction(event -> reRollNPC(object, "flawsNSecrets", npcContent));
-		flawsSecerets.getChildren().addAll(flawsSeceretsLabel, flawsSeceretsDescription, reRollFlawsSeceretsBtn);
-		
-		/* update the content view and set to center */
-		npcContent.getChildren().addAll(name, appearance, highAbility, lowAbility, talents, manerisms, interactionTrait, ideas, bonds, flawsSecerets);
-		this.setCenter(npcContent);
+	public void removeNPC() {
+		if(statList.getItems().size() > 0)
+			statList.getItems().remove(0);		
 	}
 }

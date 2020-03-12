@@ -2,6 +2,15 @@ package dmtoolkit.views;
 
 import java.util.LinkedList;
 
+import dmtoolkit.components.GenericViewLabel;
+import dmtoolkit.components.GenericViewScrollPane;
+import dmtoolkit.components.GenericViewScrollPaneListView;
+import dmtoolkit.components.GenericViewScrollPaneTextArea;
+import dmtoolkit.components.GenericViewVBox;
+import dmtoolkit.components.GenericViewVBoxHBox;
+import dmtoolkit.components.GenericViewVBoxHBoxButton;
+import dmtoolkit.components.GenericViewVBoxHBoxTextArea;
+import dmtoolkit.components.GenericViewVBoxImageView;
 import dmtoolkit.components.StatViewLabel;
 import dmtoolkit.components.StatViewScrollPane;
 import dmtoolkit.components.StatViewScrollPaneListView;
@@ -26,12 +35,12 @@ public class StatView extends BorderPane
 	private RootView parent;
 	private double width;
 	private double height;
-	private StatViewLabel statNameLabel;
-	private StatViewScrollPaneTextArea statData;
-	private StatViewVBoxHBoxTextArea[] stats;
+	private GenericViewLabel<StatView> statNameLabel;
+	private GenericViewScrollPaneTextArea<StatView> statData;
+	private GenericViewVBoxHBoxTextArea[] stats;
 	private LinkedList<StatBlock> statBlocks;
-	private StatViewVBoxImageView statImage;
-	private StatViewVBox rightHolder;
+	private GenericViewVBoxImageView<StatView> statImage;
+	private GenericViewVBox<StatView> rightHolder;
 
 	public StatView(final RootView parent, final LinkedList<StatBlock> statBlocks)
 	{
@@ -65,11 +74,11 @@ public class StatView extends BorderPane
 
 
 		// left setup
-		StatViewVBox leftHolder = new StatViewVBox(this, 0.2, 1);
+		GenericViewVBox<StatView> leftHolder = new GenericViewVBox<StatView>(this, 0.2, 1);
 
-		StatViewLabel statLabel = new StatViewLabel(leftHolder, "Stat Block Index");
-		StatViewScrollPane statIndex = new StatViewScrollPane(leftHolder, 0.9);
-		StatViewScrollPaneListView statList = new StatViewScrollPaneListView(statIndex,this.statBlocks);
+		GenericViewLabel<StatView> statLabel = new GenericViewLabel<StatView>(leftHolder, "Stat Block Index");
+		GenericViewScrollPane<StatView> statIndex = new GenericViewScrollPane<StatView>(leftHolder, 0.9);
+		GenericViewScrollPaneListView<StatView, StatBlock> statList = new GenericViewScrollPaneListView<StatView, StatBlock>(statIndex,this.statBlocks);
 		statIndex.setContent(statList);
 
 		leftHolder.getChildren().add(statLabel);
@@ -82,9 +91,10 @@ public class StatView extends BorderPane
 
 
 		// center setup
-		StatViewVBox centerHolder = new StatViewVBox(this, 0.6, 1);
+		GenericViewVBox<StatView> centerHolder = new GenericViewVBox<StatView>(this, .6, 1);
+//		StatViewVBox centerHolder = new StatViewVBox(this, 0.6, 1);
 
-		this.statNameLabel = new StatViewLabel(centerHolder, "");
+		this.statNameLabel = new GenericViewLabel<StatView>(centerHolder, "");
 		statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<StatBlock>() {
 
 			@Override
@@ -104,19 +114,19 @@ public class StatView extends BorderPane
 
 		});
 
-		StatViewScrollPane statDataPane = new StatViewScrollPane(centerHolder, 0.8);
+		GenericViewScrollPane<StatView> statDataPane = new GenericViewScrollPane<StatView>(centerHolder, 0.8);
 
-		this.statData = new StatViewScrollPaneTextArea(statDataPane);
+		this.statData = new GenericViewScrollPaneTextArea<StatView>(statDataPane);
 		this.statData.setWrapText(true);
 		this.statData.setEditable(false);
 
 		statDataPane.setContent(this.statData);
 
-		StatViewVBoxHBox statControls = new StatViewVBoxHBox(centerHolder, 1, 0.1);
+		GenericViewVBoxHBox<StatView> statControls = new GenericViewVBoxHBox<StatView>(centerHolder, 1, 0.1);
 
-		StatViewVBoxHBoxButton addInstanceBtn = new StatViewVBoxHBoxButton(statControls, "Add to Combat");
-		StatViewVBoxHBoxButton addStatBtn = new StatViewVBoxHBoxButton(statControls, "New Stat Block");
-		StatViewVBoxHBoxButton deleteStatBtn = new StatViewVBoxHBoxButton(statControls, "Delete Stat Block");
+		GenericViewVBoxHBoxButton<StatView> addInstanceBtn = new GenericViewVBoxHBoxButton<StatView>(statControls, "Add to Combat");
+		GenericViewVBoxHBoxButton<StatView> addStatBtn = new GenericViewVBoxHBoxButton<StatView>(statControls, "New Stat Block");
+		GenericViewVBoxHBoxButton<StatView> deleteStatBtn = new GenericViewVBoxHBoxButton<StatView>(statControls, "Delete Stat Block");
 
 		statControls.getChildren().addAll(addInstanceBtn, addStatBtn, deleteStatBtn);
 
@@ -132,33 +142,33 @@ public class StatView extends BorderPane
 
 
 		// right setup
-		this.rightHolder = new StatViewVBox(this, 0.2, 1);
+		this.rightHolder = new GenericViewVBox<StatView>(this, 0.2, 1);
 
-		this.statImage = new StatViewVBoxImageView(this.rightHolder, "./img/placeholder.png");
+		this.statImage = new GenericViewVBoxImageView<StatView>(this.rightHolder, "./img/placeholder.png");
 
-		StatViewVBox statShort = new StatViewVBox(this, 0.2, 0.60);
+		GenericViewVBox<StatView> statShort = new GenericViewVBox<StatView>(this, 0.2, 0.60);
 
-		StatViewVBoxHBox statASL1 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
-		StatViewVBoxHBox statAS1 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
-		StatViewVBoxHBox statASL2 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
-		StatViewVBoxHBox statAS2 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
-		StatViewVBoxHBox statASL3 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
-		StatViewVBoxHBox statAS3 = new StatViewVBoxHBox(statShort, 0.5, 1.0/6.0);
+		GenericViewVBoxHBox<StatView> statASL1 = new GenericViewVBoxHBox<StatView>(statShort, 0.5, 1.0/6.0);
+		GenericViewVBoxHBox<StatView> statAS1 = new GenericViewVBoxHBox<StatView>(statShort, 0.5, 1.0/6.0);
+		GenericViewVBoxHBox<StatView> statASL2 = new GenericViewVBoxHBox<StatView>(statShort, 0.5, 1.0/6.0);
+		GenericViewVBoxHBox<StatView> statAS2 = new GenericViewVBoxHBox<StatView>(statShort, 0.5, 1.0/6.0);
+		GenericViewVBoxHBox<StatView> statASL3 = new GenericViewVBoxHBox<StatView>(statShort, 0.5, 1.0/6.0);
+		GenericViewVBoxHBox<StatView> statAS3 = new GenericViewVBoxHBox<StatView>(statShort, 0.5, 1.0/6.0);
 
-		StatViewVBoxHBoxTextArea str = new StatViewVBoxHBoxTextArea(statAS1, "");
+		GenericViewVBoxHBoxTextArea<StatView> str = new GenericViewVBoxHBoxTextArea<StatView>(statAS1, "");
 		str.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
-		StatViewVBoxHBoxTextArea dex = new StatViewVBoxHBoxTextArea(statAS1, "");
+		GenericViewVBoxHBoxTextArea<StatView> dex = new GenericViewVBoxHBoxTextArea<StatView>(statAS1, "");
 		dex.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
-		StatViewVBoxHBoxTextArea con = new StatViewVBoxHBoxTextArea(statAS2, "");
+		GenericViewVBoxHBoxTextArea<StatView> con = new GenericViewVBoxHBoxTextArea<StatView>(statAS2, "");
 		con.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
-		StatViewVBoxHBoxTextArea intl = new StatViewVBoxHBoxTextArea(statAS2, "");
+		GenericViewVBoxHBoxTextArea<StatView> intl = new GenericViewVBoxHBoxTextArea<StatView>(statAS2, "");
 		intl.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
-		StatViewVBoxHBoxTextArea wis = new StatViewVBoxHBoxTextArea(statAS3, "");
+		GenericViewVBoxHBoxTextArea<StatView> wis = new GenericViewVBoxHBoxTextArea<StatView>(statAS3, "");
 		wis.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
-		StatViewVBoxHBoxTextArea cha = new StatViewVBoxHBoxTextArea(statAS3, "");
+		GenericViewVBoxHBoxTextArea<StatView> cha = new GenericViewVBoxHBoxTextArea<StatView>(statAS3, "");
 		cha.setStyle("-fx-font-size: 18; -fx-font-weight: normal;");
 
-		this.stats = new StatViewVBoxHBoxTextArea[6];
+		this.stats = new GenericViewVBoxHBoxTextArea[6];
 		this.stats[0] = str;
 		this.stats[1] = dex;
 		this.stats[2] = con;
@@ -166,11 +176,11 @@ public class StatView extends BorderPane
 		this.stats[4] = wis;
 		this.stats[5] = cha;
 
-		statASL1.getChildren().addAll(new StatViewVBoxHBoxTextArea(statASL1, "STR"), new StatViewVBoxHBoxTextArea(statAS1, "DEX"));
+		statASL1.getChildren().addAll(new GenericViewVBoxHBoxTextArea<StatView>(statASL1, "STR"), new GenericViewVBoxHBoxTextArea<StatView>(statAS1, "DEX"));
 		statAS1.getChildren().addAll(str, dex);
-		statASL2.getChildren().addAll(new StatViewVBoxHBoxTextArea(statASL1, "CON"), new StatViewVBoxHBoxTextArea(statAS1, "INT"));
+		statASL2.getChildren().addAll(new GenericViewVBoxHBoxTextArea<StatView>(statASL1, "CON"), new GenericViewVBoxHBoxTextArea<StatView>(statAS1, "INT"));
 		statAS2.getChildren().addAll(con, intl);
-		statASL3.getChildren().addAll(new StatViewVBoxHBoxTextArea(statASL1, "WIS"), new StatViewVBoxHBoxTextArea(statAS1, "CHA"));
+		statASL3.getChildren().addAll(new GenericViewVBoxHBoxTextArea<StatView>(statASL1, "WIS"), new GenericViewVBoxHBoxTextArea<StatView>(statAS1, "CHA"));
 		statAS3.getChildren().addAll(wis, cha);
 
 		statShort.getChildren().addAll(statASL1, statAS1, statASL2, statAS2, statASL3, statAS3);
@@ -214,14 +224,14 @@ public class StatView extends BorderPane
 		this.statData.setText(text);
 	}
 
-	public StatViewVBoxHBoxTextArea[] getStats()
+	public GenericViewVBoxHBoxTextArea[] getStats()
 	{
 		return this.stats;
 	}
 
 	public void setImage(final String url)
 	{
-		this.statImage = new StatViewVBoxImageView(this.rightHolder, url);
+		this.statImage = new GenericViewVBoxImageView<StatView>(this.rightHolder, url);
 		this.statImage.updateSizes();
 		Node otherNode = this.rightHolder.getChildren().remove(1);
 		for (int i = 0; i < this.rightHolder.getChildren().size(); i++)
