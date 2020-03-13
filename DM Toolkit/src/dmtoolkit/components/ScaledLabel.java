@@ -21,7 +21,7 @@ public class ScaledLabel extends Label implements Scalable
 		this.widthPerc = widthPerc;
 		this.heightPerc = heightPerc;
 		this.setAlignment(Pos.CENTER);
-		this.setStyle("-fx-font-weight: bolder;");
+		this.setStyle("-fx-font-weight: bolder; -fx-font-size: 20;");
 
 		// parent setup
 		this.parent.widthProperty().addListener(new ChangeListener<Number>()
@@ -45,12 +45,22 @@ public class ScaledLabel extends Label implements Scalable
 	@Override
 	public void updateSizes()
 	{
-		this.width = this.parent.getCalcWidth() * this.widthPerc;
-		this.height = this.parent.getCalcHeight() * this.heightPerc;
-		this.setMinWidth(this.width);
-		this.setMinHeight(this.height);
-		this.setMaxWidth(this.width);
-		this.setMaxHeight(this.height);
+		if (this.parent.getClass() == ScaledScrollPane.class)
+		{
+			this.width = this.parent.getCalcWidth() * this.widthPerc;
+			this.setMinWidth(this.width);
+			this.setMaxWidth(this.width);
+			this.setMinHeight(this.parent.getCalcHeight());
+		}
+		else
+		{
+			this.width = this.parent.getCalcWidth() * this.widthPerc;
+			this.height = this.parent.getCalcHeight() * this.heightPerc;
+			this.setMinWidth(this.width);
+			this.setMinHeight(this.height);
+			this.setMaxWidth(this.width);
+			this.setMaxHeight(this.height);
+		}
 	}
 
 	@Override

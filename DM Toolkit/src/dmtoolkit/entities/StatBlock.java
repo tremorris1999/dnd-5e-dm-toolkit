@@ -25,6 +25,9 @@ public class StatBlock implements Comparable<StatBlock>
 	private int chaAdditive;
 	private String[] saves;
 	private String[] skills;
+	private String[] damageResistences;
+	private String[] damageImmunities;
+	private String[] conditionImmunities;
 	private String[] senses;
 	private String[] languages;
 	private double cr;
@@ -35,7 +38,7 @@ public class StatBlock implements Comparable<StatBlock>
 	private boolean custom;
 	private String lore;
 
-	public StatBlock(final String name, final String type, final String alignment, final int ac, final int hp, final int walkSpeed, final int swimSpeed, final int climbSpeed, final int flySpeed, final int str, final int dex, final int con, final int intl, final int wis, final int cha, final String[] saves, final String[] skills, final String[] senses, final String[] languages, final double cr, final String[] properties, final String[] actions, final String[] legendaryActions, final String imgPath, final boolean custom, final String lore)
+	public StatBlock(final String name, final String type, final String alignment, final int ac, final int hp, final int walkSpeed, final int swimSpeed, final int climbSpeed, final int flySpeed, final int str, final int dex, final int con, final int intl, final int wis, final int cha, final String[] saves, final String[] skills, final String[] damageResistences, final String[] damageImmunities, final String[] conditionImmunities, final String[] senses, final String[] languages, final double cr, final String[] properties, final String[] actions, final String[] legendaryActions, final String imgPath, final boolean custom, final String lore)
 	{
 		this.name = name;
 		this.type = type;
@@ -60,6 +63,9 @@ public class StatBlock implements Comparable<StatBlock>
 		this.chaAdditive = this.calcAdditive(cha);
 		this.saves = saves;
 		this.skills = skills;
+		this.damageResistences = damageResistences;
+		this.damageImmunities = damageImmunities;
+		this.conditionImmunities = conditionImmunities;
 		this.senses = senses;
 		this.languages = languages;
 		this.cr = cr;
@@ -135,8 +141,9 @@ public class StatBlock implements Comparable<StatBlock>
 			return 9;
 		case 30:
 			return 10;
+		default:
+			return -100;
 		}
-		return -100;
 	}
 
 	public String fullData()
@@ -156,7 +163,51 @@ public class StatBlock implements Comparable<StatBlock>
 				if (i == this.saves.length - 1)
 					out = out + this.saves[i];
 				else
-					out = out + this.saves[i] + ",";
+					out = out + this.saves[i] + ", ";
+			out = out + "\n";
+		}
+
+		if (this.skills.length != 0)
+		{
+			out = out + "Skills: ";
+			for (int i = 0; i < this.skills.length; i++)
+				if (i == this.skills.length - 1)
+					out = out + this.skills[i];
+				else
+					out = out + this.skills[i] + ", ";
+			out = out + "\n";
+		}
+
+		if (this.damageResistences.length != 0)
+		{
+			out = out + "Damage Resistences: ";
+			for (int i = 0; i < this.damageResistences.length; i++)
+				if (i == this.damageResistences.length - 1)
+					out = out + this.damageResistences[i];
+				else
+					out = out + this.damageResistences[i] + ", ";
+			out = out + "\n";
+		}
+
+		if (this.damageImmunities.length != 0)
+		{
+			out = out + "Damage Immunities: ";
+			for (int i = 0; i < this.damageImmunities.length; i++)
+				if (i == this.damageImmunities.length - 1)
+					out = out + this.damageImmunities[i];
+				else
+					out = out + this.damageImmunities[i] + ", ";
+			out = out + "\n";
+		}
+
+		if (this.conditionImmunities.length != 0)
+		{
+			out = out + "Condition Immunities: ";
+			for (int i = 0; i < this.conditionImmunities.length; i++)
+				if (i == this.conditionImmunities.length - 1)
+					out = out + this.conditionImmunities[i];
+				else
+					out = out + this.conditionImmunities[i] + ", ";
 			out = out + "\n";
 		}
 
@@ -167,19 +218,41 @@ public class StatBlock implements Comparable<StatBlock>
 				if (i == this.senses.length - 1)
 					out = out + this.senses[i];
 				else
-					out = out + this.senses[i] + ",";
+					out = out + this.senses[i] + ", ";
 			out = out + "\n";
 		}
 
-		out = out + "\n\nActions:";
-		for (String s : this.actions)
-			out = out + "\n\t" + s + "\n";
-		out = out + "\n";
+		if(this.languages.length != 0)
+		{
+			out = out + "Languages: ";
+			for (int i = 0; i < this.languages.length; i++)
+				if (i == this.languages.length - 1)
+					out = out + this.languages[i];
+				else
+					out = out + this.languages[i] + ", ";
+			out = out + "\n";
+		}
 
-		out = out + "Legendary Actions: \n";
-		for (String s : this.legendaryActions)
-			out = out + "\n\t" + s + "\n";
-		out = out + "\n";
+		if (this.actions.length != 0)
+		{
+			out = out + "\n\nActions:\n";
+			for (String s : this.actions)
+				out = out + "\n\t\t" + s + "\n";
+			out = out + "\n";
+		}
+
+		if (this.legendaryActions.length != 0)
+		{
+			out = out + "Legendary Actions: \n";
+			for (String s : this.legendaryActions)
+				out = out + "\n\t\t" + s + "\n";
+			out = out + "\n";
+		}
+
+		if (this.lore.length() != 0)
+		{
+			out = out + this.lore;
+		}
 
 		return out;
 	}
@@ -187,50 +260,110 @@ public class StatBlock implements Comparable<StatBlock>
 
 	public String modStr()
 	{
-		if (this.strAdditive < 0)
-			return this.str + "(" + this.strAdditive + ")";
+		if (this.str < 10)
+		{
+			if (this.strAdditive < 0)
+				return " " + this.str + "(" + this.strAdditive + ")";
+			else
+				return " " + this.str + "(+" + this.strAdditive + ")";
+		}
 		else
-			return this.str + "(+" + this.strAdditive + ")";
+		{
+			if (this.strAdditive < 0)
+				return this.str + "(" + this.strAdditive + ")";
+			else
+				return this.str + "(+" + this.strAdditive + ")";
+		}
 	}
 
 	public String modDex()
 	{
-		if (this.dexAdditive < 0)
-			return this.dex + "(" + this.dexAdditive + ")";
+		if (this.dex < 10)
+		{
+			if (this.dexAdditive < 0)
+				return " " + this.dex + "(" + this.dexAdditive + ")";
+			else
+				return " " + this.dex + "(+" + this.dexAdditive + ")";
+		}
 		else
-			return this.dex + "(+" + this.dexAdditive + ")";
+		{
+			if (this.dexAdditive < 0)
+				return this.dex + "(" + this.dexAdditive + ")";
+			else
+				return this.dex + "(+" + this.dexAdditive + ")";
+		}
 	}
 
 	public String modCon()
 	{
-		if (this.conAdditive < 0)
-			return this.con + "(" + this.conAdditive + ")";
+		if (this.con < 10)
+		{
+			if (this.conAdditive < 0)
+				return " " + this.con + "(" + this.conAdditive + ")";
+			else
+				return " " + this.con + "(+" + this.conAdditive + ")";
+		}
 		else
-			return this.con + "(+" + this.conAdditive + ")";
+		{
+			if (this.conAdditive < 0)
+				return this.con + "(" + this.conAdditive + ")";
+			else
+				return this.con + "(+" + this.conAdditive + ")";
+		}
 	}
 
 	public String modIntl()
 	{
-		if (this.intlAdditive < 0)
-			return this.intl + "(" + this.intlAdditive + ")";
+		if (this.intl < 10)
+		{
+			if (this.intlAdditive < 0)
+				return " " + this.intl + "(" + this.intlAdditive + ")";
+			else
+				return " " + this.intl + "(+" + this.intlAdditive + ")";
+		}
 		else
-			return this.intl + "(+" + this.intlAdditive + ")";
+		{
+			if (this.intlAdditive < 0)
+				return this.intl + "(" + this.intlAdditive + ")";
+			else
+				return this.intl + "(+" + this.intlAdditive + ")";
+		}
 	}
 
 	public String modWis()
 	{
-		if (this.wisAdditive < 0)
-			return this.wis + "(" + this.wisAdditive + ")";
+		if (this.wis < 10)
+		{
+			if (this.wisAdditive < 0)
+				return " " + this.wis + "(" + this.wisAdditive + ")";
+			else
+				return " " + this.wis + "(+" + this.wisAdditive + ")";
+		}
 		else
-			return this.wis + "(+" + this.wisAdditive + ")";
+		{
+			if (this.wisAdditive < 0)
+				return this.wis + "(" + this.wisAdditive + ")";
+			else
+				return this.wis + "(+" + this.wisAdditive + ")";
+		}
 	}
 
 	public String modCha()
 	{
-		if (this.chaAdditive < 0)
-			return this.cha + "(" + this.chaAdditive + ")";
+		if (this.str < 10)
+		{
+			if (this.chaAdditive < 0)
+				return " " + this.cha + "(" + this.chaAdditive + ")";
+			else
+				return " " + this.cha + "(+" + this.chaAdditive + ")";
+		}
 		else
-			return this.cha + "(+" + this.chaAdditive + ")";
+		{
+			if (this.chaAdditive < 0)
+				return this.cha + "(" + this.chaAdditive + ")";
+			else
+				return this.cha + "(+" + this.chaAdditive + ")";
+		}
 	}
 
 	@Override

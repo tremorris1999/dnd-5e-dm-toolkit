@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import dmtoolkit.entities.StatBlock;
+import dmtoolkit.utility.comparators.NameComparator;
 
 public class StatIO
 {
@@ -42,6 +43,18 @@ public class StatIO
 			String[] skills = new String[numSkills];
 			for (int j = 0; j < numSkills; j++)
 				skills[j] = scan.nextLine();
+			int numDamageResistences = Integer.parseInt(scan.nextLine());
+			String[] damageResistences = new String[numDamageResistences];
+			for (int j = 0; j < numDamageResistences; j++)
+				damageResistences[j] = scan.nextLine();
+			int numDamageImmunities = Integer.parseInt(scan.nextLine());
+			String[] damageImmunities = new String[numDamageImmunities];
+			for (int j = 0; j < numDamageImmunities; j++)
+				damageImmunities[j] = scan.nextLine();
+			int numConditionImmunities = Integer.parseInt(scan.nextLine());
+			String[] conditionImmunities = new String[numConditionImmunities];
+			for (int j = 0; j < numConditionImmunities; j++)
+				conditionImmunities[j] = scan.nextLine();
 			int numSenses = Integer.parseInt(scan.nextLine());
 			String[] senses = new String[numSenses];
 			for (int j = 0; j < numSenses; j++)
@@ -69,13 +82,16 @@ public class StatIO
 			while (scan.hasNextLine())
 			{
 				String next = scan.nextLine();
-				if (next.compareToIgnoreCase("(endLore)") != 0)
+				if (next.compareToIgnoreCase("(endlore)") != 0)
 					lore = lore + next + " ";
+				else
+					break;
 			}
 
 			lore = reformatString(lore);
-			statBlocks.add(new StatBlock(name, type, alignment, ac, hp, walkingSpeed, swimmingSpeed, climbingSpeed, flyingSpeed, str, dex, con, intl, wis, cha, saves, skills, senses, languages, cr, properties, actions, legendaryActions, imgPath, custom, lore.trim()));
+			statBlocks.add(new StatBlock(name, type, alignment, ac, hp, walkingSpeed, swimmingSpeed, climbingSpeed, flyingSpeed, str, dex, con, intl, wis, cha, saves, skills, damageResistences, damageImmunities, conditionImmunities, senses, languages, cr, properties, actions, legendaryActions, imgPath, custom, lore.trim()));
 		}
+		statBlocks.sort(new NameComparator());
 		return statBlocks;
 	}
 

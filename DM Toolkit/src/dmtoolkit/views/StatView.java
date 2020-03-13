@@ -6,7 +6,6 @@ import dmtoolkit.components.ScaledImageView;
 import dmtoolkit.components.ScaledLabel;
 import dmtoolkit.components.ScaledListView;
 import dmtoolkit.components.ScaledScrollPane;
-import dmtoolkit.components.ScaledTextArea;
 import dmtoolkit.components.ScaledVBox;
 import dmtoolkit.entities.StatBlock;
 import dmtoolkit.interfaces.Scalable;
@@ -26,7 +25,7 @@ public class StatView extends BorderPane implements Scalable
 	private double width;
 	private double height;
 	private ScaledLabel statNameLabel;
-	private ScaledTextArea statData;
+	private ScaledLabel statData;
 	private ScaledLabel[] stats;
 	private ObservableLinkedList<StatBlock> statBlocks;
 	private ScaledImageView statImage;
@@ -92,6 +91,15 @@ public class StatView extends BorderPane implements Scalable
 
 		this.statNameLabel = new ScaledLabel(centerHolder, "", 1, 0.1);
 
+		ScaledScrollPane statDataPane = new ScaledScrollPane(centerHolder, 1, 0.8);
+
+		this.statData = new ScaledLabel(statDataPane, "", 1, 1);
+		this.statData.setWrapText(true);
+		//this.statData.setEditable(false);
+		this.statData.setStyle("-fx-font-size: 16");
+
+		statDataPane.setContent(this.statData);
+
 		this.statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<StatBlock>() {
 
 			@Override
@@ -110,14 +118,6 @@ public class StatView extends BorderPane implements Scalable
 			}
 
 		});
-
-		ScaledScrollPane statDataPane = new ScaledScrollPane(centerHolder, 1, 0.8);
-
-		this.statData = new ScaledTextArea(statDataPane, "", 1, 1);
-		this.statData.setWrapText(true);
-		this.statData.setEditable(false);
-
-		statDataPane.setContent(this.statData);
 
 		ScaledHBox statControls = new ScaledHBox(centerHolder, 1, 0.1);
 
