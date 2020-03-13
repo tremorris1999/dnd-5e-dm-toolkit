@@ -1,13 +1,12 @@
 package dmtoolkit.components;
 
-import java.util.LinkedList;
-
 import dmtoolkit.interfaces.Scalable;
+import dmtoolkit.utility.ObservableLinkedList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ListView;
 
-public class ScaledListView<StatBlock> extends ListView<StatBlock> implements Scalable
+public class ScaledListView<T extends Comparable<T>> extends ListView<T> implements Scalable
 {
 	private Scalable parent;
 	private double width;
@@ -15,13 +14,12 @@ public class ScaledListView<StatBlock> extends ListView<StatBlock> implements Sc
 	private double widthPerc;
 	private double heightPerc;
 
-	public ScaledListView(final Scalable parent, final double widthPerc, final double heightPerc, final LinkedList<StatBlock> data)
+	public ScaledListView(final Scalable parent, final double widthPerc, final double heightPerc, final ObservableLinkedList<T> data)
 	{
-		super();
+		super(data);
 		this.parent = parent;
-
-		for (StatBlock t : data)
-			this.getItems().add(t);
+		this.widthPerc = widthPerc;
+		this.heightPerc = heightPerc;
 
 		// parent setup
 		this.parent.widthProperty().addListener(new ChangeListener<Number>()
@@ -47,7 +45,10 @@ public class ScaledListView<StatBlock> extends ListView<StatBlock> implements Sc
 	{
 		this.width = this.parent.getCalcWidth() * this.widthPerc;
 		this.height = this.parent.getCalcHeight() * this.heightPerc;
-		this.setPrefSize(this.width, this.height);
+		this.setMinWidth(this.width);
+		this.setMinHeight(this.height);
+		this.setMaxWidth(this.width);
+		this.setMaxHeight(this.height);
 	}
 
 	@Override
@@ -74,12 +75,12 @@ public class ScaledListView<StatBlock> extends ListView<StatBlock> implements Sc
 		return this.getChildren().size();
 	}
 
-	public void remove(final StatBlock item)
+	public void remove(final T item)
 	{
 		this.getItems().remove(item);
 	}
 
-	public void add(final StatBlock item)
+	public void add(final T item)
 	{
 		this.getItems().add(item);
 	}

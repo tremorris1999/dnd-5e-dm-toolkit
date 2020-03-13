@@ -1,7 +1,5 @@
 package dmtoolkit.views;
 
-import java.util.LinkedList;
-
 import dmtoolkit.components.ScaledButton;
 import dmtoolkit.components.ScaledHBox;
 import dmtoolkit.components.ScaledImageView;
@@ -12,6 +10,7 @@ import dmtoolkit.components.ScaledTextArea;
 import dmtoolkit.components.ScaledVBox;
 import dmtoolkit.entities.StatBlock;
 import dmtoolkit.interfaces.Scalable;
+import dmtoolkit.utility.ObservableLinkedList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -29,11 +28,12 @@ public class StatView extends BorderPane implements Scalable
 	private ScaledLabel statNameLabel;
 	private ScaledTextArea statData;
 	private ScaledLabel[] stats;
-	private LinkedList<StatBlock> statBlocks;
+	private ObservableLinkedList<StatBlock> statBlocks;
 	private ScaledImageView statImage;
 	private ScaledVBox rightHolder;
+	private ScaledListView<StatBlock> statList;
 
-	public StatView(final RootView parent, final LinkedList<StatBlock> statBlocks)
+	public StatView(final RootView parent, final ObservableLinkedList<StatBlock> statBlocks)
 	{
 		super();
 		this.statBlocks = statBlocks;
@@ -67,19 +67,18 @@ public class StatView extends BorderPane implements Scalable
 		// left setup
 		ScaledVBox leftHolder = new ScaledVBox(this, 0.2, 1);
 
-		ScaledLabel statLabel = new ScaledLabel(leftHolder, "Stat Block Index", 1, 0.1);
+		ScaledLabel statLabel = new ScaledLabel(leftHolder, "Stat Block Index", 1, 0.10);
 		statLabel.setAlignment(Pos.CENTER);
 		statLabel.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-font-style: italic;");
 
 		ScaledScrollPane statIndex = new ScaledScrollPane(leftHolder, 1, 0.9);
-		for (int i = 0; i < 100; i++)
-			this.statBlocks.add(null);
-		ScaledListView<StatBlock> statList = new ScaledListView<StatBlock>(statIndex, 0.99, 0.99, this.statBlocks);
-		statIndex.setContent(statList);
-		System.out.println(statList.getItems().get(0));
+
+		this.statList = new ScaledListView<StatBlock>(statIndex, 0.99, 0.99, this.statBlocks);
+
+		statIndex.setContent(this.statList);
 
 		leftHolder.getChildren().add(statLabel);
-		leftHolder.getChildren().add(statList);
+		leftHolder.getChildren().add(statIndex);
 
 		this.setLeft(leftHolder);
 
@@ -93,7 +92,7 @@ public class StatView extends BorderPane implements Scalable
 
 		this.statNameLabel = new ScaledLabel(centerHolder, "", 1, 0.1);
 
-		statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<StatBlock>() {
+		this.statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<StatBlock>() {
 
 			@Override
 			public void onChanged(final Change<? extends StatBlock> arg0)

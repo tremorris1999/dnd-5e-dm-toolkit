@@ -1,10 +1,8 @@
 package dmtoolkit.views;
 
-import java.util.LinkedList;
-
-import dmtoolkit.components.ScaledListView;
 import dmtoolkit.entities.StatBlock;
 import dmtoolkit.interfaces.Scalable;
+import dmtoolkit.utility.ObservableLinkedList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.BorderPane;
@@ -15,7 +13,7 @@ public class MainView extends BorderPane implements Scalable
 	private RootView parent;
 	private double width;
 	private double height;
-	public MainView(final RootView parent, final LinkedList<StatBlock> list)
+	public MainView(final RootView parent, final ObservableLinkedList<StatBlock> list)
 	{
 		super();
 
@@ -41,9 +39,6 @@ public class MainView extends BorderPane implements Scalable
 		// style setup
 		this.setStyle("-fx-background-color: cadetblue;");
 
-		ScaledListView<StatBlock> view = new ScaledListView<StatBlock>(this, 1, 1, new LinkedList<StatBlock>());
-		view.getItems().addAll(list);
-		this.setCenter(view);
 	}
 
 	@Override
@@ -59,25 +54,25 @@ public class MainView extends BorderPane implements Scalable
 
 	@Override
 	public Scalable getScaleParent() {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public double getCalcWidth() {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public double getCalcHeight() {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getChildCount() {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return 0;
 	}
 }

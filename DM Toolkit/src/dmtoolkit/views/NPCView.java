@@ -63,9 +63,20 @@ public class NPCView extends BorderPane implements Scalable
 		// left setup
 		ScaledVBox leftHolder = new ScaledVBox(this, 0.2, 1);
 
-		ScaledLabel statLabel = new ScaledLabel(leftHolder, "NPC's", 1, 1);
-		ScaledScrollPane statIndex = new ScaledScrollPane(leftHolder, 0.9, 1);
-		this.statList = new ScaledListView<NPC>(statIndex, 1, 1, this.statBlocks);
+		ScaledLabel statLabel = new ScaledLabel(leftHolder, "NPC's", 1, 0.1);
+		statLabel.setAlignment(Pos.CENTER);
+
+		ScaledScrollPane statIndex = new ScaledScrollPane(leftHolder, 1, 0.9);
+
+		for (int i = 0; i < 3; i++)
+			this.statBlocks.add(new NPC());
+
+		this.statList = new ScaledListView<NPC>(statIndex, 0.99, 0.99, this.statBlocks);
+
+		this.statBlocks.add(new NPC()); // FOR ADDING TO LISTVIEW
+
+		this.statList = new ScaledListView<NPC>(statIndex, 0.99, 0.99, this.statBlocks); // YOU HAVE TO RECONSTRUCT AFTER ADDING
+
 		statIndex.setContent(this.statList);
 
 		leftHolder.getChildren().add(statLabel);
@@ -73,33 +84,25 @@ public class NPCView extends BorderPane implements Scalable
 
 		this.setLeft(leftHolder);
 
-		// center setup
-		ScaledVBox centerHolder = new ScaledVBox(this, .6, 1);
-		//		StatViewVBox centerHolder = new StatViewVBox(this, 0.6, 1);
 
-		this.statNameLabel = new ScaledLabel(centerHolder, "", 1, 1);
+
+		// center setup
+		ScaledVBox centerHolder = new ScaledVBox(this, 0.6, 1);
+		centerHolder.setAlignment(Pos.CENTER);
+
+		this.statNameLabel = new ScaledLabel(centerHolder, "", 1, 0.1);
+
 		this.statList.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<NPC>() {
 
 			@Override
 			public void onChanged(final Change<? extends NPC> arg0)
 			{
 				NPCView.this.setStatNameLabelText(arg0.getList().get(0).name());
-				/*
-				NPCView2.this.setStatDataText(arg0.getList().get(0).fullData());
-				NPCView2.this.setImage(arg0.getList().get(0).getImgPath());
-				NPCView2.this.getStats()[0].setText(arg0.getList().get(0).modStr());
-				NPCView2.this.getStats()[1].setText(arg0.getList().get(0).modDex());
-				NPCView2.this.getStats()[2].setText(arg0.getList().get(0).modCon());
-				NPCView2.this.getStats()[3].setText(arg0.getList().get(0).modIntl());
-				NPCView2.this.getStats()[4].setText(arg0.getList().get(0).modWis());
-				NPCView2.this.getStats()[5].setText(arg0.getList().get(0).modCha());
-				 */
-
 			}
 
 		});
 
-		ScaledScrollPane statDataPane = new ScaledScrollPane(centerHolder, 0.8, 1);
+		ScaledScrollPane statDataPane = new ScaledScrollPane(centerHolder, 1, 0.8);
 
 		this.statData = new ScaledTextArea(statDataPane, "", 1, 1);
 		this.statData.setWrapText(true);
@@ -109,8 +112,8 @@ public class NPCView extends BorderPane implements Scalable
 
 		ScaledHBox statControls = new ScaledHBox(centerHolder, 1, 0.1);
 
-		ScaledButton addInstanceBtn = new ScaledButton(statControls, "Add NPC", 1, 1);
-		ScaledButton deleteStatBtn = new ScaledButton(statControls, "Delete First NPC", 1, 1);
+		ScaledButton addInstanceBtn = new ScaledButton(statControls, "Add NPC", 1.0 / 2.0, 1);
+		ScaledButton deleteStatBtn = new ScaledButton(statControls, "Delete First NPC", 1.0 / 2.0, 1);
 		statControls.getChildren().addAll(addInstanceBtn, deleteStatBtn);
 		addInstanceBtn.setOnAction(event -> this.addNPC());
 		deleteStatBtn.setOnAction(event -> this.removeNPC());

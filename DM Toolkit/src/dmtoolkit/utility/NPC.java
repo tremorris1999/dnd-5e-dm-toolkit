@@ -22,6 +22,12 @@ public class NPC implements Comparable<NPC>{
 	public String name() {
 		return this.name;
 	}
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
+
 	public String appearance() {
 		return this.apperance;
 	}

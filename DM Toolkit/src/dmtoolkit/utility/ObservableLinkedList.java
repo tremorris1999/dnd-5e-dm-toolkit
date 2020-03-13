@@ -16,61 +16,61 @@ public class ObservableLinkedList<T extends Comparable<?super T>> extends java.u
 
 	@Override
 	public void addListener(final InvalidationListener arg0) {
-		// TODO Auto-generated method stub
+		//  Auto-generated method stub
 
 	}
 
 	@Override
 	public void removeListener(final InvalidationListener arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 
 	}
 
 	@Override
 	public boolean addAll(@SuppressWarnings("unchecked") final T... arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void addListener(final ListChangeListener<? super T> arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 
 	}
 
 	@Override
 	public void remove(final int arg0, final int arg1) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 
 	}
 
 	@Override
 	public boolean removeAll(@SuppressWarnings("unchecked") final T... arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void removeListener(final ListChangeListener<? super T> arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 
 	}
 
 	@Override
 	public boolean retainAll(@SuppressWarnings("unchecked") final T... arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean setAll(@SuppressWarnings("unchecked") final T... arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean setAll(final Collection<? extends T> arg0) {
-		// TODO Auto-generated method stub
+		//   Auto-generated method stub
 		return false;
 	}
 
