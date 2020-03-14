@@ -51,12 +51,12 @@ public class MainToolBar extends ToolBar implements Scalable
 		ScaledButton statBtn = new ScaledButton(this, "Stat Blocks", children, 1), xpBtn = new ScaledButton(this, "XP Manager", children, 1);
 		ScaledButton npcBtn = new ScaledButton(this, "NPC Manager", children, 1), prefBtn = new ScaledButton(this, "Preferences", children, 1);
 
-		this.items.add(mainBtn);
-		this.items.add(combatBtn);
+		//this.items.add(mainBtn);
+		//this.items.add(combatBtn);
 		this.items.add(statBtn);
-		this.items.add(xpBtn);
-		this.items.add(npcBtn);
-		this.items.add(prefBtn);
+		//this.items.add(xpBtn);
+		//this.items.add(npcBtn);
+		//this.items.add(prefBtn);
 		this.size = this.getItems().size();
 
 		mainBtn.setOnAction(new EventHandler<ActionEvent>()

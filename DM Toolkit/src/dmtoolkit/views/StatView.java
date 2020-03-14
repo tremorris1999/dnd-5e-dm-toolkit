@@ -31,6 +31,7 @@ public class StatView extends BorderPane implements Scalable
 	private ScaledImageView statImage;
 	private ScaledVBox rightHolder;
 	private ScaledListView<StatBlock> statList;
+	private ScaledButton deleteStatBtn;
 
 	public StatView(final RootView parent, final ObservableLinkedList<StatBlock> statBlocks)
 	{
@@ -115,6 +116,11 @@ public class StatView extends BorderPane implements Scalable
 				StatView.this.getStats()[4].setText(arg0.getList().get(0).modWis());
 				StatView.this.getStats()[5].setText(arg0.getList().get(0).modCha());
 
+				if (arg0.getList().get(0).isCustom())
+					StatView.this.setDeletable(false);
+				else
+					StatView.this.setDeletable(true);
+
 			}
 
 		});
@@ -123,9 +129,9 @@ public class StatView extends BorderPane implements Scalable
 
 		ScaledButton addInstanceBtn = new ScaledButton(statControls, "Add to Combat", 1.0 / 3.0 , 1);
 		ScaledButton addStatBtn = new ScaledButton(statControls, "New Stat Block", 1.0 / 3.0 , 1);
-		ScaledButton deleteStatBtn = new ScaledButton(statControls, "Delete Stat Block", 1.0 / 3.0 , 1);
+		this.deleteStatBtn = new ScaledButton(statControls, "Delete Stat Block", 1.0 / 3.0 , 1);
 
-		statControls.getChildren().addAll(addInstanceBtn, addStatBtn, deleteStatBtn);
+		statControls.getChildren().addAll(addInstanceBtn, addStatBtn, this.deleteStatBtn);
 
 
 		centerHolder.getChildren().addAll(this.statNameLabel, statDataPane, statControls);
@@ -226,6 +232,11 @@ public class StatView extends BorderPane implements Scalable
 	public ScaledLabel[] getStats()
 	{
 		return this.stats;
+	}
+
+	public void setDeletable(final boolean b)
+	{
+		this.deleteStatBtn.setDisable(b);
 	}
 
 	public void setImage(final String url)

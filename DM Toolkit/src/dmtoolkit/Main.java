@@ -31,7 +31,7 @@ public class Main extends Application
 			Node[] panes = {new MainView(root, statBlocks), new CombatView(root), new StatView(root, statBlocks), new NPCView(root, npcBlocks)};
 
 			root.setTop(new MainToolBar(root, panes));
-			root.setCenter(panes[0]);
+			root.setCenter(panes[2]);
 			root.setBottom(new ConsoleView(root));
 			Scene scene = new Scene(root, 1288, 720);
 			primaryStage.setMinWidth(this.windowWidth);
@@ -39,6 +39,7 @@ public class Main extends Application
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Dungeon Master's Toolkit v 0.0.1 pre-pre-pre-pre-pre-alpha");
 			primaryStage.show();
+			dmtoolkit.utility.StatIO.toDB(statBlocks);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

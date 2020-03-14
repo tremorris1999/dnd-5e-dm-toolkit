@@ -156,7 +156,7 @@ public class StatBlock implements Comparable<StatBlock>
 		out = out + "STR\t\tDEX\t\tCON\t\tINT\t\tWIS\t\tCHA\n";
 		out = out + this.modStr() + "\t" + this.modDex() + "\t" + this.modCon() + "\t" + this.modIntl() + "\t" + this.modWis() + "\t" + this.modCha() + "\n\n\n";
 
-		if (this.saves.length != 0)
+		if (this.saves[0].compareTo("") != 0)
 		{
 			out = out + "Saving Throws: ";
 			for (int i = 0; i < this.saves.length; i++)
@@ -167,7 +167,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if (this.skills.length != 0)
+		if (this.skills[0].compareTo("") != 0)
 		{
 			out = out + "Skills: ";
 			for (int i = 0; i < this.skills.length; i++)
@@ -178,7 +178,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if (this.damageResistences.length != 0)
+		if (this.damageResistences[0].compareTo("") != 0)
 		{
 			out = out + "Damage Resistences: ";
 			for (int i = 0; i < this.damageResistences.length; i++)
@@ -189,7 +189,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if (this.damageImmunities.length != 0)
+		if (this.damageImmunities[0].compareTo("") != 0)
 		{
 			out = out + "Damage Immunities: ";
 			for (int i = 0; i < this.damageImmunities.length; i++)
@@ -200,7 +200,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if (this.conditionImmunities.length != 0)
+		if (this.conditionImmunities[0].compareTo("") != 0)
 		{
 			out = out + "Condition Immunities: ";
 			for (int i = 0; i < this.conditionImmunities.length; i++)
@@ -211,7 +211,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if(this.senses.length != 0)
+		if(this.senses[0].compareTo("") != 0)
 		{
 			out = out + "Senses: ";
 			for (int i = 0; i < this.senses.length; i++)
@@ -222,7 +222,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if(this.languages.length != 0)
+		if(this.languages[0].compareTo("") != 0)
 		{
 			out = out + "Languages: ";
 			for (int i = 0; i < this.languages.length; i++)
@@ -233,7 +233,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if (this.actions.length != 0)
+		if (this.actions[0].compareTo("") != 0)
 		{
 			out = out + "\n\nActions:\n";
 			for (String s : this.actions)
@@ -241,7 +241,7 @@ public class StatBlock implements Comparable<StatBlock>
 			out = out + "\n";
 		}
 
-		if (this.legendaryActions.length != 0)
+		if (this.legendaryActions[0].compareTo("") != 0)
 		{
 			out = out + "Legendary Actions: \n";
 			for (String s : this.legendaryActions)
@@ -554,6 +554,30 @@ public class StatBlock implements Comparable<StatBlock>
 
 	public void setSkills(final String[] skills) {
 		this.skills = skills;
+	}
+
+	public String[] getDamageResistences() {
+		return this.damageResistences;
+	}
+
+	public void setDamageResistences(final String[] damageResistences) {
+		this.damageResistences = damageResistences;
+	}
+
+	public String[] getDamageImmunities() {
+		return this.damageImmunities;
+	}
+
+	public void setDamageImmunities(final String[] damageImmunities) {
+		this.damageImmunities = damageImmunities;
+	}
+
+	public String[] getConditionImmunities() {
+		return this.conditionImmunities;
+	}
+
+	public void setConditionImmunities(final String[] conditionImmunities) {
+		this.conditionImmunities = conditionImmunities;
 	}
 
 	public String[] getSenses() {
