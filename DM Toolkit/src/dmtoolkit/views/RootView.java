@@ -9,6 +9,7 @@ public class RootView extends BorderPane implements Scalable
 {
 	private double width;
 	private double height;
+	private String DB_OUT = "./out/dbOut.txt";
 
 	public RootView(final double windowWidth, final double windowHeight)
 	{
@@ -44,6 +45,10 @@ public class RootView extends BorderPane implements Scalable
 		this.height = newValue.doubleValue();
 	}
 
+	public ConsoleView getConsole()
+	{
+		return (ConsoleView) this.getBottom();
+	}
 	@Override
 	public double getCalcWidth()
 	{
@@ -72,6 +77,11 @@ public class RootView extends BorderPane implements Scalable
 	public int getChildCount()
 	{
 		return this.getChildren().size();
+	}
+
+	public String getDBPath()
+	{
+		return this.DB_OUT;
 	}
 
 }

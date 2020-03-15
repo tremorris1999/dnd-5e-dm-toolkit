@@ -83,8 +83,7 @@ public class StatView extends BorderPane implements Scalable
 		iconHolder.getChildren().add(icon);
 		iconHolder.setAlignment(Pos.CENTER);
 
-		this.searchBar = new ScaledTextArea(sbHolder, "", 0.88, 0.99);
-		this.searchBar.setPromptText("Search...");
+		this.searchBar = new ScaledTextArea(sbHolder, "Search...", 0.88, 0.99);
 
 		sbHolder.getChildren().addAll(iconHolder, this.searchBar);
 

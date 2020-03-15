@@ -15,10 +15,11 @@ public class ScaledTextArea extends TextArea implements Scalable
 
 	public ScaledTextArea(final Scalable parent, final String text, final double widthPerc, final double heightPerc)
 	{
-		super(text);
+		super();
 		this.parent = parent;
 		this.widthPerc = widthPerc;
 		this.heightPerc = heightPerc;
+		this.setPromptText(text);
 
 		// parent setup
 		this.parent.widthProperty().addListener(new ChangeListener<Number>()
