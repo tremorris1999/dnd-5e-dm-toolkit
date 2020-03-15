@@ -21,7 +21,6 @@ public class StatIO
 		File fin = new File(PATH);
 		scan = new Scanner(fin);
 		scan.useDelimiter("\\s\\|\\s");
-		System.out.println("[" + scan.delimiter() + "]");
 		int total = Integer.parseInt(scan.next().trim());
 		for (int i = 0; i < total; i++)
 		{
@@ -79,21 +78,6 @@ public class StatIO
 		}
 		statBlocks.sort(new NameComparator());
 		return statBlocks;
-	}
-
-	public static String reformatString(final String in)
-	{
-		StringBuilder sb = new StringBuilder(in);
-		int j = in.length();
-		for (int i = 1; i < j; i++)
-		{
-			if (in.charAt(i) == '\t')
-			{
-				sb.replace(i - 1, i + 1, "\n\n");
-				i++;
-			}
-		}
-		return sb.toString();
 	}
 
 	public static void toDB(final ObservableLinkedList<StatBlock> list) throws IOException

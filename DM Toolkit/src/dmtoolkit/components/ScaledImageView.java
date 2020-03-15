@@ -45,8 +45,8 @@ public class ScaledImageView extends ImageView implements Scalable
 		this.width = this.parent.getCalcWidth() * 0.625;
 		this.height = this.parent.getCalcHeight() * 0.4;
 		//this.setPreserveRatio(true); TODO Fix maybe?
-		this.setFitWidth(this.width * 0.95);
-		this.setFitHeight(this.height * 0.95);
+		this.setFitWidth(this.width);
+		this.setFitHeight(this.height);
 	}
 
 	@Override

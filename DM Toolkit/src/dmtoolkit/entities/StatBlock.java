@@ -237,17 +237,19 @@ public class StatBlock implements Comparable<StatBlock>
 		{
 			out = out + "\n\nActions:\n";
 			for (String s : this.actions)
-				out = out + "\n\t\t" + s + "\n";
+				out = out + "\n\t" + s + "\n";
 			out = out + "\n";
 		}
 
 		if (this.legendaryActions[0].compareTo("") != 0)
 		{
-			out = out + "Legendary Actions: \n";
+			out = out + "\nLegendary Actions: \n";
 			for (String s : this.legendaryActions)
-				out = out + "\n\t\t" + s + "\n";
+				out = out + "\n\t" + s + "\n";
 			out = out + "\n";
 		}
+
+		out = out + "\n\n";
 
 		if (this.lore.length() != 0)
 		{
